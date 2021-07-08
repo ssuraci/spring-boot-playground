@@ -126,7 +126,7 @@ This is a simple starter project for spring based CRUD applications that integra
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-There are 2 maven profile:
+There are 2 maven profiles:
 * `postgres` (default)
     * jdbc url: `jdbc:postgresql://localhost:54320/spring_boot_demo_db`
     * user: `postgres`
@@ -151,6 +151,7 @@ java -jar spring-boot-playground-demo-0.1.0.jar
 
 * code clenaup
 * further integrations (eg: [fix jpa n+1 problem](Spring-Data-Jpa-ManyToOne-n-plus-1-problem-solution))
+* support more DB
 * Kubernetes integration
 * CI/CD pipelines
 * ...
