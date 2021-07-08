@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.repository.BaseRepository;
-import it.sebastianosuraci.springboot.core.repository.PageModel;
 import it.sebastianosuraci.springboot.demo.domain.QTeacher;
 import it.sebastianosuraci.springboot.demo.domain.Teacher;
 

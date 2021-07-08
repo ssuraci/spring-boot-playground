@@ -21,6 +21,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
+import it.sebastianosuraci.springboot.core.dto.PageModel;
 
 @NoRepositoryBean
 public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable> extends EntityGraphJpaRepository<T, K>, EntityGraphQuerydslPredicateExecutor<T> {

@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
+import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
 import it.sebastianosuraci.springboot.core.repository.BaseRepository;
-import it.sebastianosuraci.springboot.core.repository.PageModel;
 
 
 

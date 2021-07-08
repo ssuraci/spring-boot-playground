@@ -1,4 +1,4 @@
-package it.sebastianosuraci.springboot.core.repository;
+package it.sebastianosuraci.springboot.core.dto;
 
 import java.util.ArrayList;
 import java.util.List;

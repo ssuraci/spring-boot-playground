@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
 import it.sebastianosuraci.springboot.core.dto.BaseSerialDTO;
+import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.dto.ValidationResponse;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
-import it.sebastianosuraci.springboot.core.repository.PageModel;
 import it.sebastianosuraci.springboot.core.service.BaseService;
 
 public abstract class BaseController<T extends BaseEntity<K>, D extends BaseSerialDTO, K extends Serializable> {
