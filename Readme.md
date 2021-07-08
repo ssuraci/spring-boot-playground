@@ -127,14 +127,14 @@ This is a simple starter project for spring based CRUD applications that integra
 ## Usage
 
 There are 2 maven profile:
-* postgres (default)
-    * jdbc url: jdbc:postgresql://localhost:54320/spring_boot_demo_db
-    * user: postgres
-    * password: postgres
-* SQL Server
-    * jdbc url: jdbc:sqlserver://localhost:14330;databaseName=master
-    * user: sa
-    * password: Pass@word
+* `postgres` (default)
+    * jdbc url: `jdbc:postgresql://localhost:54320/spring_boot_demo_db`
+    * user: `postgres`
+    * password: `postgres`
+* `SQL Server`
+    * jdbc url: `jdbc:sqlserver://localhost:14330;databaseName=master`
+    * user: `sa`
+    * password: `Pass@word`
 
 1. Start a database configured for chosen maven profile (you can use docker-compose images in `spring-boot-playground-demo/src/main/resources/db/docker/`)        
 2. Run demo application 
