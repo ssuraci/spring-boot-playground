@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd" version="2.0">
+
+    <!-- using JPQL query -->
+    <named-query name="Teacher.qFindByLastName">
+        <query><![CDATA[
+            SELECT t FROM Teacher t WHERE lastName = :lastName
+        ]]></query>
+    </named-query>
+
+    <!-- using Native SQL query -->
+    <named-native-query name="Teacher.nqFindByLastName" 
+        result-class="it.sebastianosuraci.springboot.demo.domain.Teacher">
+        <query><![CDATA[
+            SELECT * FROM teacher WHERE last_name = :lastName
+        ]]></query>
+    </named-native-query>
+
+</entity-mappings>

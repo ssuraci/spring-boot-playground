@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-test-db-deployment
+  labels:
+    app: spring-boot-test-db
+spec:
+  selector:
+    matchLabels:
+      app: spring-boot-test-db
+  template:
+    metadata:
+      labels:
+        app: spring-boot-test-db
+    spec:
+      containers:
+      - name: spring-boot-test-db
+        image: localhost:32000/spring-boot-test-db:registry
+        env:
+          - name: POSTGRES_PASSWORD
+            value: "postgres"
+        ports:
+        - containerPort: 5432

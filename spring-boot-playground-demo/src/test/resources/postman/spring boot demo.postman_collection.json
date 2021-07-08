@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "badfaf79-770c-4cf5-83a3-a5aeb5e2bdf3",
+		"name": "spring boot demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get school",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/demo/school?pageStart=1&pageItems=20&f[nameLike]=sc",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"demo",
+						"school"
+					],
+					"query": [
+						{
+							"key": "pageStart",
+							"value": "1"
+						},
+						{
+							"key": "pageItems",
+							"value": "20"
+						},
+						{
+							"key": "entityGraph",
+							"value": "school.teacherList",
+							"disabled": true
+						},
+						{
+							"key": "entityGraph",
+							"value": "school.teacherListAndCourse",
+							"disabled": true
+						},
+						{
+							"key": "f[nameLike]",
+							"value": "sc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get teacher",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/demo/teacher/?pageStart=1&pageItems=20",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"demo",
+						"teacher",
+						""
+					],
+					"query": [
+						{
+							"key": "pageStart",
+							"value": "1"
+						},
+						{
+							"key": "pageItems",
+							"value": "20"
+						},
+						{
+							"key": "f[lastNameLike]",
+							"value": "ros",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get teacher by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/demo/teacher/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"demo",
+						"teacher",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save teacher",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n       \"lastName\": \"Verdim\",\n       \"firstName\": \"Alessio\",\n        \"email\": \"t3@test.com\",\n        \"birthDate\": \"1987-01-02\",\n        \"category\": \"TC_JUNIOR\",\n        \"schoolName\": \"Scuola 1\",\n        \"schoolId\": 1\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/demo/teacher",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"demo",
+						"teacher"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update teacher",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n       \"lastName\": \"Verdim\",\n       \"firstName\": \"Alessio\",\n        \"email\": \"t3@test.com\",\n        \"birthDate\": \"1987-01-02\",\n        \"category\": \"TC_JUNIOR\",\n        \"schoolName\": \"Scuola 1\",\n        \"schoolId\": 1,\n        \"id\": 3\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/demo/teacher/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"demo",
+						"teacher",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete teacher",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/demo/teacher/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"demo",
+						"teacher",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
