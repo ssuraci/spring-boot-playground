@@ -80,14 +80,20 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A simple project starter for Spring Boot based CRUD applications. 
+A simple project starter for Spring Boot based CRUD applications. Provides:
+* abstract classes with basic endpoints for CRUD operations
+* out-of-the-box filtering, pagination, sorting for select operations
+* validation for insert / update
+* integration with many support libraries
+* testcontainers support for integration testing
+* demo application
 
 ### Built With
 
 * [Spring Boot](https://spring.io/projects/spring-boot)
 * [Spring Data](https://spring.io/projects/spring-data)
 * [Hibernate ORM](https://hibernate.org/orm/)
-* [Hibernate Validation](https://hibernate.org/validation/)
+* [Hibernate Validator](http://hibernate.org/validator/)
 * [Spring Data JPA Entity Graph](https://github.com/Cosium/spring-data-jpa-entity-graph)
 * [SpringDoc](https://springdoc.org/)
 * [Liquibase](https://www.liquibase.org/)
@@ -152,6 +158,7 @@ java -jar spring-boot-playground-demo-0.1.0.jar
 * code clenaup
 * further integrations (eg: [fix jpa n+1 problem](Spring-Data-Jpa-ManyToOne-n-plus-1-problem-solution))
 * support more DB
+* security support
 * Kubernetes integration
 * CI/CD pipelines
 * ...
