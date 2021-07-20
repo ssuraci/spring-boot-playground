@@ -29,12 +29,13 @@
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<querydsl.version>4.4.0</querydsl.version>
 		<spring.boot.version>2.5.2</spring.boot.version>
-		<testcontainers.version>1.16.0</testcontainers.version>
+		<testcontainers.version>1.15.3</testcontainers.version>
 		<junit.jupiter.version>5.7.1</junit.jupiter.version>
 		<springfox.version>3.0.0</springfox.version>
 		<lombok.version>1.18.20</lombok.version>
 		<spring-security.version>5.5.1</spring-security.version>
 		<cosium-spring-data.version>2.5.0</cosium-spring-data.version>
+		<playtika.testcontainers.version>2.0.10</playtika.testcontainers.version>
 	</properties>
 
 	<dependencyManagement>
@@ -143,7 +144,7 @@
 			<dependency>
 				<groupId>com.playtika.testcontainers</groupId>
 				<artifactId>embedded-postgresql</artifactId>
-				<version>1.86</version>
+				<version>${playtika.testcontainers.version}</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
