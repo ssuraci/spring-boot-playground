@@ -10,7 +10,7 @@
 	<artifactId>spring-boot-playground-core</artifactId>
 	<name>spring-boot-playground-core</name>
 	<description>Demo project for Spring Boot</description>
-
+	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>

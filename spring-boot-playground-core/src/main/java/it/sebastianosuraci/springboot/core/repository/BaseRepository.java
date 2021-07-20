@@ -27,7 +27,7 @@ import it.sebastianosuraci.springboot.core.dto.PageModel;
 public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable> extends EntityGraphJpaRepository<T, K>, EntityGraphQuerydslPredicateExecutor<T> {
 
 	default List<T> getList(PageModel pageModel) {
-		var builder = new BooleanBuilder();
+		BooleanBuilder builder = new BooleanBuilder();
 		Pageable pageable = getPageable(pageModel);
 		Predicate query = buildCriteria(builder, pageModel);
 		Page<T> page = null;
@@ -57,7 +57,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 		}
 		if (pageModel.getSort() != null) {
 			for (String sortField : pageModel.getSort()) {
-				var direction = Direction.ASC;
+				Direction direction = Direction.ASC;
 				if (sortField.startsWith("+")) {
 					direction = Direction.ASC;
 					sortField = sortField.substring(1);
