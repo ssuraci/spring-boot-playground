@@ -29,7 +29,7 @@
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<querydsl.version>4.4.0</querydsl.version>
 		<spring.boot.version>2.5.2</spring.boot.version>
-		<testcontainers.version>1.15.3</testcontainers.version>
+		<testcontainers.version>1.16.0</testcontainers.version>
 		<junit.jupiter.version>5.7.1</junit.jupiter.version>
 		<springfox.version>3.0.0</springfox.version>
 		<lombok.version>1.18.20</lombok.version>
