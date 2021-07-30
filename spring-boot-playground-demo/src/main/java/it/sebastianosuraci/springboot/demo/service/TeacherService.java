@@ -4,19 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.sebastianosuraci.springboot.demo.domain.Teacher;
-import it.sebastianosuraci.springboot.core.repository.BaseRepository;
 import it.sebastianosuraci.springboot.core.service.BaseService;
+import it.sebastianosuraci.springboot.core.service.IBaseService;
 import it.sebastianosuraci.springboot.demo.repository.TeacherRepository;
 
 @Service
-public class TeacherService extends BaseService<Teacher, Integer> {
+public class TeacherService extends BaseService<Teacher, Integer> implements IBaseService<Teacher, Integer> {
 
     @Autowired
-    TeacherRepository schoolRepository;
-
-    @Override
-    protected BaseRepository<Teacher, Integer> getBaseRepository() {
-        return schoolRepository;
-    }
+    public TeacherService(TeacherRepository teacherRepository) {
+        super(teacherRepository);
+    } 
     
 }

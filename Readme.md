@@ -146,7 +146,7 @@ There are 2 maven profiles:
 2. Run demo application 
 ```
 cd spring-boot-playground/spring-boot-playground-demo/target
-java -jar spring-boot-playground-demo-0.1.0.jar
+java -jar spring-boot-playground-demo-0.1.1.jar
 ```
 3. Browse springdoc documentation `http://localhost:8080/swagger-ui`
 4. Use `Postman` collection in `src/test/resources/postman/spring boot demo.postman_collection.json` to call REST enpoints

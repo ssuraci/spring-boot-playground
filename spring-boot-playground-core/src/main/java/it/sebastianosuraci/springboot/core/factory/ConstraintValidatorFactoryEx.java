@@ -3,15 +3,13 @@ package it.sebastianosuraci.springboot.core.factory;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 
 public class ConstraintValidatorFactoryEx implements ConstraintValidatorFactory {
 
-            private final Logger logger = LoggerFactory.getLogger(ConstraintValidatorFactoryEx.class);
+            // private final Logger logger = LoggerFactory.getLogger(ConstraintValidatorFactoryEx.class);
 
             @Autowired
             private AutowireCapableBeanFactory beanFactory;
@@ -45,7 +43,6 @@ public class ConstraintValidatorFactoryEx implements ConstraintValidatorFactory 
 
     @Override
     public void releaseInstance(ConstraintValidator<?, ?> instance) {
-        // TODO Auto-generated method stub
         
     }
 }

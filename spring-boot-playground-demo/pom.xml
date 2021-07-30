@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>it.sebastianosuraci.springboot</groupId>
 		<artifactId>spring-boot-playground-bom</artifactId>
-		<version>0.1.0</version>
+		<version>0.1.1</version>
 		<relativePath>../spring-boot-playground-bom/</relativePath>
 	</parent>
 	<artifactId>spring-boot-playground-demo</artifactId>

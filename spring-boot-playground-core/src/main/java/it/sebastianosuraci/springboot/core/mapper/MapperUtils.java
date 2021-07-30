@@ -1,8 +1,8 @@
-package it.sebastianosuraci.springboot.demo.mapper;
+package it.sebastianosuraci.springboot.core.mapper;
 
 import org.hibernate.collection.spi.PersistentCollection;
 
-class MapperUtil {
+class MapperUtils {
     static boolean wasInitialized(Object c) {
         if (!(c instanceof PersistentCollection)) {
             return true;
@@ -12,5 +12,5 @@ class MapperUtil {
         return pc.wasInitialized();
     }
 
-    private MapperUtil() {}
+    private MapperUtils() {}
 }

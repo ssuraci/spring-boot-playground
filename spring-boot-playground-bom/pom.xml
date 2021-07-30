@@ -7,7 +7,7 @@
 
 	<groupId>it.sebastianosuraci.springboot</groupId>
 	<artifactId>spring-boot-playground-bom</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<packaging>pom</packaging>
 
 	<name>spring-boot-playground-bom</name>

@@ -27,27 +27,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
-import it.sebastianosuraci.springboot.core.dto.BaseSerialDTO;
+import it.sebastianosuraci.springboot.core.dto.BaseDTO;
 import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.dto.ValidationResponse;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
-import it.sebastianosuraci.springboot.core.service.BaseService;
+import it.sebastianosuraci.springboot.core.mapper.IBaseMapper;
+import it.sebastianosuraci.springboot.core.service.IBaseService;
+import lombok.RequiredArgsConstructor;
 
-public abstract class BaseController<T extends BaseEntity<K>, D extends BaseSerialDTO, K extends Serializable> {
+@RequiredArgsConstructor
+public abstract class BaseController<T extends BaseEntity<K>, D extends BaseDTO<K>, K extends Serializable> {
 
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	protected Validator validator;
 
-	protected abstract BaseService<T, K> getService();
+	final protected IBaseService<T, K> service;
 
-	protected abstract D entityToDto(T entity);
-
-	protected abstract List<D> entityToDtoList(List<T> entity);
-
-	protected abstract T dtoToEntity(D dto);
+	final protected IBaseMapper<T, D, K> mapper;
 
 	protected void afterSave(T entity, D dto) {
 
@@ -68,8 +67,8 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseSeri
 	@GetMapping(path = "/{id}")
 	@ResponseBody
 	public D getOne(@PathVariable K id) throws AppException {
-		Optional<T> entity = getService().findById(id);
-		return entity.map(x -> entityToDto(x)).orElse(null);
+		Optional<T> entity = service.findById(id);
+		return entity.map(x -> mapper.entityToDto(x)).orElse(null);
 	}
 
 	@GetMapping
@@ -81,9 +80,9 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseSeri
 		}
 		beforeGetList(pageModel, request);
 
-		List<T> res = getService().getList(pageModel);
+		List<T> res = service.getList(pageModel);
 		response.setHeader("X-Total-Count", Integer.toString(pageModel.getFetchedRows()));
-		return entityToDtoList(res);
+		return mapper.entityToDtoList(res);
 	}
 
 	@PostMapping
@@ -94,8 +93,8 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseSeri
 		try {
 			beforeSave(dto);
 			validate(dto, true);
-			T entity = dtoToEntity(dto);
-			getService().save(entity);
+			T entity = mapper.dtoToEntity(dto);
+			service.save(entity);
 			afterSave(entity, dto);
 		} catch (AppException appException) {
 			if (appException.getErrCode().equals(ErrCode.VALIDATION)) {
@@ -116,12 +115,12 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseSeri
 		try {
 			beforeUpdate(dto);
 			validate(dto, false);
-			dtoToEntity(dto).setId(id);
-			if (id == null || !getService().findById(id).isPresent()) {
+			mapper.dtoToEntity(dto).setId(id);
+			if (id == null || ! service.findById(id).isPresent()) {
 				throw new AppException(ErrCode.NOT_FOUND, "entity not found");
 			}
-			T entity = dtoToEntity(dto);
-			getService().save(entity);
+			T entity = mapper.dtoToEntity(dto);
+			service.save(entity);
 			afterUpdate(entity, dto);
 		} catch (AppException appException) {
 			if (appException.getErrCode().equals(ErrCode.VALIDATION)) {
@@ -141,7 +140,7 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseSeri
 		// security check
 		ValidationResponse<T> validationResponse = new ValidationResponse<>();
 		try {
-			getService().delete(id);
+			service.delete(id);
 		} catch (AppException appException) {
 			if (appException.getErrCode().equals(ErrCode.VALIDATION)) {
 				validationResponse.setValidationErrorList(appException.getValidationErrorList());
