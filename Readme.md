@@ -112,7 +112,7 @@ This is a simple starter project for spring based CRUD applications that integra
 
 ### Prerequisites
 
-* Java 11 or greater
+* Java 1.8 or greater
 * Maven 3
 * Docker 20.10
 
