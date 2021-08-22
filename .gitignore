@@ -159,7 +159,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
+.idea/**
+*.iml
 
 # End of https://www.gitignore.io/api/git,java,maven,eclipse,windows
 spring-boot-playground-core/src/main/resources/k8s/commands.txt

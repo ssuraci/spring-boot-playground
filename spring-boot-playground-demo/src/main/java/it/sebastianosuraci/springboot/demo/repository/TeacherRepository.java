@@ -6,11 +6,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import it.sebastianosuraci.springboot.core.domain.QBaseEntity;
 import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.repository.BaseRepository;
 import it.sebastianosuraci.springboot.demo.domain.QTeacher;
@@ -49,9 +51,9 @@ public interface TeacherRepository extends BaseRepository<Teacher, Integer> {
 
 
     @Override
-    default BooleanBuilder buildCriteria(BooleanBuilder builder, PageModel pageModel) {
-            QTeacher teacher = QTeacher.teacher;
-
+    default BooleanBuilder addFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
+        QTeacher teacher = QTeacher.teacher;
+        if (pageModel != null && pageModel.getF() != null) {
             for (Map.Entry<String, String> entry : pageModel.getF().entrySet()) {
                 switch (entry.getKey()) {
                 case "q":
@@ -61,8 +63,13 @@ public interface TeacherRepository extends BaseRepository<Teacher, Integer> {
                     default:
                     break;
                 }
-    }
+            }
+        }
     return builder;
+    }
+
+    default QBaseEntity getQBaseEntity() {
+        return QTeacher.teacher._super._super;    
     }
 
 }

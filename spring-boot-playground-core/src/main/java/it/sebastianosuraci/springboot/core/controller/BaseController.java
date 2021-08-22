@@ -15,6 +15,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import it.sebastianosuraci.springboot.core.dto.ValidationResponse;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
 import it.sebastianosuraci.springboot.core.mapper.IBaseMapper;
+import it.sebastianosuraci.springboot.core.service.FetchOptions;
 import it.sebastianosuraci.springboot.core.service.IBaseService;
 import lombok.RequiredArgsConstructor;
 
@@ -66,8 +69,8 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseDTO<
 
 	@GetMapping(path = "/{id}")
 	@ResponseBody
-	public D getOne(@PathVariable K id) throws AppException {
-		Optional<T> entity = service.findById(id);
+	public D getOne(@PathVariable K id, HttpServletRequest request) throws AppException {
+		Optional<T> entity = service.findById(id, FetchOptions.builder().userPermFilter(true).build());
 		return entity.map(x -> mapper.entityToDto(x)).orElse(null);
 	}
 
@@ -80,21 +83,21 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseDTO<
 		}
 		beforeGetList(pageModel, request);
 
-		List<T> res = service.getList(pageModel);
+		List<T> res = service.getList(FetchOptions.builder().userPermFilter(true).pageModel(pageModel).build());
 		response.setHeader("X-Total-Count", Integer.toString(pageModel.getFetchedRows()));
 		return mapper.entityToDtoList(res);
 	}
 
 	@PostMapping
 	@ResponseBody
-	public ValidationResponse<T> save(@RequestBody D dto) throws AppException {
+	public ValidationResponse<T> insert(@RequestBody D dto) throws AppException {
 		// security check
 		ValidationResponse<T> validationResponse = new ValidationResponse<>();
 		try {
 			beforeSave(dto);
 			validate(dto, true);
 			T entity = mapper.dtoToEntity(dto);
-			service.save(entity);
+			service.insert(entity);
 			afterSave(entity, dto);
 		} catch (AppException appException) {
 			if (appException.getErrCode().equals(ErrCode.VALIDATION)) {
@@ -116,11 +119,8 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseDTO<
 			beforeUpdate(dto);
 			validate(dto, false);
 			mapper.dtoToEntity(dto).setId(id);
-			if (id == null || ! service.findById(id).isPresent()) {
-				throw new AppException(ErrCode.NOT_FOUND, "entity not found");
-			}
 			T entity = mapper.dtoToEntity(dto);
-			service.save(entity);
+			service.update(entity, FetchOptions.builder().userPermFilter(true).build());
 			afterUpdate(entity, dto);
 		} catch (AppException appException) {
 			if (appException.getErrCode().equals(ErrCode.VALIDATION)) {
@@ -140,7 +140,7 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseDTO<
 		// security check
 		ValidationResponse<T> validationResponse = new ValidationResponse<>();
 		try {
-			service.delete(id);
+			service.delete(id, FetchOptions.builder().userPermFilter(true).build());
 		} catch (AppException appException) {
 			if (appException.getErrCode().equals(ErrCode.VALIDATION)) {
 				validationResponse.setValidationErrorList(appException.getValidationErrorList());

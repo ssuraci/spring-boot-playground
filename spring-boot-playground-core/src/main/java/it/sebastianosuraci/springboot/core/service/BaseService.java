@@ -8,10 +8,8 @@ import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Sort;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
-import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
 import it.sebastianosuraci.springboot.core.repository.BaseRepository;
@@ -28,11 +26,18 @@ public abstract class BaseService<T extends BaseEntity<K>, K extends Serializabl
 
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 		
-	protected void beforeSave(T newEntity) throws AppException {
+	protected void beforeInsert(T newEntity) throws AppException {
 
 	}
 
-	protected void afterSave(T entity) {
+	protected void afterInsert(T entity) {
+
+	}
+	protected T beforeUpdate(T updateEntity) throws AppException {
+		return updateEntity;
+	}
+
+	protected void afterUpdate(T entity) {
 
 	}
 
@@ -44,49 +49,59 @@ public abstract class BaseService<T extends BaseEntity<K>, K extends Serializabl
 
 	}
 
+	protected void checkExistsById(K id, FetchOptions fetchOptions) throws AppException {
+		if (!repository.existsById(id, fetchOptions)) {
+			throw new AppException(ErrCode.NOT_FOUND);
+		}
+	}
+
 	@Transactional
-	public void save(T newEntity) throws AppException {
-		beforeSave(newEntity);
+	public void insert(T newEntity) throws AppException {
+		beforeInsert(newEntity);
 		repository.save(newEntity);
-		afterSave(newEntity);
+		afterInsert(newEntity);
 	}
 
 	@Transactional
-	public void delete(T entity) throws AppException {
-		beforeDelete(entity);
-		repository.delete(entity);
-		afterDelete(entity);
+	public void update(T updateEntity, FetchOptions fetchOptions) throws AppException {		
+		checkExistsById(updateEntity.getId(), fetchOptions);
+		updateEntity = beforeUpdate(updateEntity);
+		repository.save(updateEntity);
+		afterUpdate(updateEntity);
 	}
 
 	@Transactional
-	public void delete(K id) throws AppException {
-		T entity = findById(id).orElseThrow(() -> new AppException(ErrCode.VALIDATION, "entity not found"));
-		repository.delete(entity);
+	public void delete(T deleteEntity, FetchOptions fetchOptions) throws AppException {
+		checkExistsById(deleteEntity.getId(), fetchOptions);
+		beforeDelete(deleteEntity);
+		repository.delete(deleteEntity);
+		afterDelete(deleteEntity);
 	}
 
 	@Transactional
-	public Optional<T> findById(K id) throws AppException {
-		Optional<T> entity = repository.findById(id);
+	public void delete(K id, FetchOptions fetchOptions) throws AppException {
+		checkExistsById(id, fetchOptions);
+		repository.deleteById(id);
+	}
+
+	@Transactional
+	public Optional<T> findById(K id, FetchOptions fetchOptions) throws AppException {
+		Optional<T> entity = repository.findById(id, fetchOptions);
 		afterFindById(entity);
 		return entity;
 	}
-	
+
+	@Transactional
+	public boolean existsById(K id, FetchOptions fetchOptions) throws AppException {
+		return repository.existsById(id, fetchOptions);
+	}
+
 	protected void afterFindById(Optional<T> entity) throws AppException {
 		
 	}
 
-	
-	public List<T> getList(PageModel pageModel) {
-		return repository.getList(pageModel);
+	public List<T> getList(FetchOptions fetchOptions) {
+		return repository.getList(fetchOptions);
 	}
 	
-	@Transactional
-	public List<T> findAllOrderByOrd() {
-		return repository.findAll(Sort.by("ord"));
-	}
-
-	@Transactional
-	public List<T> findAllOrderById() {
-		return repository.findAll(Sort.by("id"));
-	}
 }

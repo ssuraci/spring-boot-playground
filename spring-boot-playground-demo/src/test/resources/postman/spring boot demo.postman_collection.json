@@ -11,7 +11,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/demo/school?pageStart=1&pageItems=20&f[nameLike]=sc",
+					"raw": "localhost:8080/api/demo/school?pageStart=1&pageItems=20&fetchProfile=detailWithCourse&f[nameLike]=sc",
 					"host": [
 						"localhost"
 					],
@@ -31,14 +31,8 @@
 							"value": "20"
 						},
 						{
-							"key": "entityGraph",
-							"value": "school.teacherList",
-							"disabled": true
-						},
-						{
-							"key": "entityGraph",
-							"value": "school.teacherListAndCourse",
-							"disabled": true
+							"key": "fetchProfile",
+							"value": "detailWithCourse"
 						},
 						{
 							"key": "f[nameLike]",

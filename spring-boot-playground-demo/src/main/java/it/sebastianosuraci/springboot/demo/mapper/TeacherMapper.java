@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.mapper.BaseMapper;
 import it.sebastianosuraci.springboot.core.mapper.IBaseMapper;
+import it.sebastianosuraci.springboot.core.service.FetchOptions;
 import it.sebastianosuraci.springboot.core.service.IBaseService;
 import it.sebastianosuraci.springboot.demo.domain.School;
 import it.sebastianosuraci.springboot.demo.domain.Teacher;
@@ -18,7 +19,7 @@ public abstract class TeacherMapper extends BaseMapper implements IBaseMapper<Te
     @Autowired
     IBaseService<School, Integer> schoolService;
     public School integerToSchool(Integer id) throws AppException {
-		return schoolService.findById(id).orElse(null);
+		return schoolService.findById(id, FetchOptions.builder().userPermFilter(true).build()).orElse(null);
 	}
 
     @Override

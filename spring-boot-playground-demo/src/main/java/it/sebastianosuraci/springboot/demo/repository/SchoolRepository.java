@@ -3,10 +3,13 @@ package it.sebastianosuraci.springboot.demo.repository;
 import java.util.Map;
 import java.util.Optional;
 
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 
+import it.sebastianosuraci.springboot.core.domain.QBaseEntity;
 import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.repository.BaseRepository;
 import it.sebastianosuraci.springboot.demo.domain.QSchool;
@@ -14,12 +17,13 @@ import it.sebastianosuraci.springboot.demo.domain.School;
 
 public interface SchoolRepository extends BaseRepository<School, Integer> {
 
-    @EntityGraph(attributePaths = { "teacherList" })
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = { "teacherList" })
     Optional<School> findOneById(Integer id);
 
     @Override
-    default BooleanBuilder buildCriteria(BooleanBuilder builder, PageModel pageModel) {
-            QSchool school = QSchool.school;
+    default BooleanBuilder addFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
+        QSchool school = QSchool.school;
+        if (pageModel != null && pageModel.getF() != null) {
 
             for (Map.Entry<String, String> entry : pageModel.getF().entrySet()) {
                 switch (entry.getKey()) {
@@ -30,8 +34,24 @@ public interface SchoolRepository extends BaseRepository<School, Integer> {
                 default:
                 break;    
                 }
-    }
-    return builder;
+            }
+        }
+        return builder;
     }
 
+    default QBaseEntity getQBaseEntity() {
+        return QSchool.school._super._super;    
+    }
+
+    @Override
+    default Optional<EntityGraph> getEntityGraph(String fetchProfile) {
+		switch (fetchProfile) {
+            case "detail":
+                return Optional.of(EntityGraphs.named("school.teacherList"));
+            case "detailWithCourse":
+                return Optional.of(EntityGraphs.named("school.teacherListAndCourse"));
+            default:
+                return Optional.empty();    
+        }
+	}
 }

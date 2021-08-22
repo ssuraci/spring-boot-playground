@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import it.sebastianosuraci.springboot.core.exception.AppException;
+import it.sebastianosuraci.springboot.core.service.FetchOptions;
 import it.sebastianosuraci.springboot.demo.domain.School;
 import it.sebastianosuraci.springboot.demo.domain.Teacher;
 import it.sebastianosuraci.springboot.demo.repository.CourseRepository;
@@ -34,20 +35,15 @@ class DemoApplicationTests {
 
 
 	@Test
-	void appTeacher01Test() {
-		Assert.assertEquals(2, teacherService.findAllOrderById().size());
-	}
-
-	@Test
 	void appTeacher02Test() throws AppException {
-		Optional<School> schoolOpt = schoolService.findById(1);
+		Optional<School> schoolOpt = schoolService.findById(1, FetchOptions.builder().userPermFilter(false).build());
 		Assert.assertTrue(schoolOpt.isPresent());
 		Teacher t = new Teacher();
 		t.setFirstName("Michele");
 		t.setLastName("Bianchi");
 		t.setSchool(schoolOpt.get());
-		teacherService.save(t);
-		Assert.assertEquals(3, teacherService.findAllOrderById().size());
+		teacherService.insert(t);
+		Assert.assertEquals(3, teacherService.getList(FetchOptions.builder().userPermFilter(false).build()).size());
 	}
 
 	@Test

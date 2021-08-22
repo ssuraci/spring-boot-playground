@@ -13,7 +13,7 @@ import lombok.Data;
 public class PageModel {
 
 	protected Map<String, String> f = new TreeMap<>();
-	protected String entityGraph;
+	protected String fetchProfile;
 	protected Integer pageStart = 1;
 	protected Integer pageItems = 20;
 	protected Integer fetchedRows;
