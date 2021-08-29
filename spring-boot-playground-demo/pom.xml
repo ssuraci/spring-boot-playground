@@ -133,27 +133,6 @@
 			</testResource>
 		</testResources>
 		<plugins>
-
-			<!-- <plugin>
-				<groupId>com.querydsl</groupId>
-				<artifactId>querydsl-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>generate-query-dsl-classes-core</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>jpa-export</goal>
-						</goals>
-						<configuration>
-							<targetFolder>target/generated-sources/java</targetFolder>
-							<packages>
-								<package>it.sebastianosuraci.springboot.core.domain</package>
-								<package>it.sebastianosuraci.springboot.demo.domain</package>
-							</packages>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
 			<plugin>
 		        	<groupId>org.springframework.boot</groupId>
 		        	<artifactId>spring-boot-maven-plugin</artifactId>
@@ -191,6 +170,36 @@
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>ssuraci/spring-boot-demo</name>
+                            <build>
+                                <from>fabric8/java-alpine-openjdk8-jre</from>
+                                <assemblies>
+                                    <assembly>
+                                        <descriptorRef>dependencies</descriptorRef>
+                                        <name>deps</name>
+                                        <targetDir>/app/lib</targetDir>
+                                    </assembly>
+                                    <assembly>
+                                        <descriptorRef>artifact</descriptorRef>
+                                        <targetDir>/app</targetDir>
+                                    </assembly>
+                                </assemblies>
+                                <cmd>java -jar /app/${project.artifactId}-${project.version}.jar</cmd>
+                                <ports>
+                                    <port>8080</port>
+                                </ports>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -208,6 +217,20 @@
 				<liquibase.url>jdbc:postgresql://localhost:54320/spring_boot_demo_db</liquibase.url>
 				<liquibase.username>postgres</liquibase.username>
 				<liquibase.password>postgres</liquibase.password>
+				<liquibase.ChangeLogFile>src/main/resources/db/changes/initial-changelog.xml</liquibase.ChangeLogFile>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev-pgsql-k8s</id>
+			<properties>
+				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
+				<datasource.url>jdbc:postgresql://postgres:54321/postgresdb</datasource.url>
+				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
+				<datasource.username>postgresadmin</datasource.username>
+				<datasource.password>admin123</datasource.password>
+				<liquibase.url>jdbc:postgresql://postgres:54321/postgresdb</liquibase.url>
+				<liquibase.username>postgresadmin</liquibase.username>
+				<liquibase.password>admin123</liquibase.password>
 				<liquibase.ChangeLogFile>src/main/resources/db/changes/initial-changelog.xml</liquibase.ChangeLogFile>
 			</properties>
 		</profile>

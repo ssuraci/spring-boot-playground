@@ -242,10 +242,12 @@
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>3.8.0.2131</version>
 				</plugin>
-
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>0.37.0</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-
-
 </project>

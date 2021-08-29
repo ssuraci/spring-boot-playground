@@ -1,14 +1,14 @@
-package it.sebastianosuraci.springboot.demo;
+package it.sebastianosuraci.springboot.demo.testcontainer;
 
 import java.util.Optional;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.service.FetchOptions;
 import it.sebastianosuraci.springboot.demo.domain.School;
@@ -35,6 +35,7 @@ class DemoApplicationTests {
 
 
 	@Test
+	@Disabled
 	void appTeacher02Test() throws AppException {
 		Optional<School> schoolOpt = schoolService.findById(1, FetchOptions.builder().userPermFilter(false).build());
 		Assert.assertTrue(schoolOpt.isPresent());
@@ -47,6 +48,7 @@ class DemoApplicationTests {
 	}
 
 	@Test
+	@Disabled
 	void appTeacher03Test() throws AppException {
 		// spring-data
 		Assert.assertEquals(1, teacherRepository.findByLastName("Rossi").size());

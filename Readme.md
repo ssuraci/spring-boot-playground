@@ -151,6 +151,43 @@ java -jar spring-boot-playground-demo-0.1.1.jar
 3. Browse springdoc documentation `http://localhost:8080/swagger-ui`
 4. Use `Postman` collection in `src/test/resources/postman/spring boot demo.postman_collection.json` to call REST enpoints
 
+## Experimental Kubernetes support (minikube)
+
+1. Build Docker image with
+
+```
+eval $(minikube docker-env)
+mvn -Pdev-pgsql-k8s clean package docker:build -Dmaven.test.skip=true
+```
+
+2. Apply Kubernetes resources
+
+```
+cd spring-boot-playground-demo/src/main/resources/k8s/
+kubectl apply -f setup/namespace.yaml
+kubectl apply -f postgres/postgres.yaml  --namespace=spring-boot-demo-dev
+kubectl apply -f app/spring-boot-demo.yaml  --namespace=spring-boot-demo-dev
+```
+
+3. Start minikube tunnel (requires root)
+```
+minikube tunnel
+```
+
+4. Get service list
+
+```
+kubectl get svc
+NAME                  TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)           AGE
+postgres              LoadBalancer   10.110.228.206   10.110.228.206   54321:30918/TCP   4h56m
+spring-boot-demo-lb   LoadBalancer   10.102.131.119   10.102.131.119   8088:30291/TCP    18m
+```
+
+5. Check web endpoint with IP from previous command output
+```
+wget http://10.102.131.119:8088/api/demo/school
+```
+
 
 <!-- ROADMAP -->
 ## Roadmap

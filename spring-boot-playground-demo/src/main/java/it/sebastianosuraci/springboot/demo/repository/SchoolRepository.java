@@ -45,6 +45,9 @@ public interface SchoolRepository extends BaseRepository<School, Integer> {
 
     @Override
     default Optional<EntityGraph> getEntityGraph(String fetchProfile) {
+        if (fetchProfile == null) {
+            return Optional.empty();
+        }
 		switch (fetchProfile) {
             case "detail":
                 return Optional.of(EntityGraphs.named("school.teacherList"));
