@@ -21,7 +21,7 @@ public interface SchoolRepository extends BaseRepository<School, Integer> {
     Optional<School> findOneById(Integer id);
 
     @Override
-    default BooleanBuilder addFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
+    default BooleanBuilder addPageModelFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
         QSchool school = QSchool.school;
         if (pageModel != null && pageModel.getF() != null) {
 

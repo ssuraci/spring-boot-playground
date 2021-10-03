@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
@@ -51,7 +50,7 @@ public interface TeacherRepository extends BaseRepository<Teacher, Integer> {
 
 
     @Override
-    default BooleanBuilder addFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
+    default BooleanBuilder addPageModelFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
         QTeacher teacher = QTeacher.teacher;
         if (pageModel != null && pageModel.getF() != null) {
             for (Map.Entry<String, String> entry : pageModel.getF().entrySet()) {

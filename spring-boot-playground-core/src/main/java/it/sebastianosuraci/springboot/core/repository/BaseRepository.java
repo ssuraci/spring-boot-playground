@@ -19,60 +19,145 @@ import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaRepository;
 import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphQuerydslPredicateExecutor;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
 import it.sebastianosuraci.springboot.core.domain.QBaseEntity;
 import it.sebastianosuraci.springboot.core.dto.PageModel;
+import it.sebastianosuraci.springboot.core.exception.AppException;
+import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
 import it.sebastianosuraci.springboot.core.service.FetchOptions;
+
+
+/**
+ * This class represents a default repository for entities. By subclassing this interface and redefining a few methods, 
+ * the following features of a complete and funcional CRUD implementation are automatically available:
+ *   
+ * - support for plain JPA, QueryDSL and EntityGraph
+ * - unified and simplified handling of implicit user visibility filters
+ * - support for filtering, ordering and paging item lists
+ * 
+ */
 
 @NoRepositoryBean
 public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable> extends EntityGraphJpaRepository<T, K>, EntityGraphQuerydslPredicateExecutor<T> {
 
 
-	default BooleanBuilder findByIdPredicate(K id, FetchOptions fetchOptions) {
+	/**
+	 * Returns the predicate based on fetchOptions by adding to the query:
+	 *  - user visibility filters
+	 *  - filters defined in pageModel
+	 * 
+	 * @param builder
+	 * @param fetchOptions
+	 * @return
+	 */
+	default BooleanBuilder addFetchOptionsPredicate(BooleanBuilder builder,FetchOptions fetchOptions) {
+		return Optional.of(builder)
+			.map(b -> fetchOptions.isUserPermFilter() ? addUserPermFilterPredicate(b) : b)
+			.map(b -> fetchOptions.getPageModel() != null ? addPageModelFilterPredicate(b, fetchOptions.getPageModel()) : b)
+			.get();
+	}
+
+
+	/**
+	 * Default predicate when searching an entity by id. Should be overridden in case of composite keys.
+	 * 
+	 * @param id id to be searched
+	 * @param fetchOptions FetchOptions (eg: wheter to filter by user visibility, etc)
+	 * @return @BooleamBuilder predicate
+	 */
+	default BooleanBuilder addFindByIdPredicate(K id) {
 		BooleanBuilder builder = new BooleanBuilder(); 
 		QBaseEntity baseEntity = getQBaseEntity();
 		builder.and(baseEntity.id.eq(id)); 
-		if (fetchOptions.isUserPermFilter()) {
-			addUserPermFilterPredicate(builder);
-		}
 		return builder;
 	}
 
-
+	/**
+	 * Finds an entity by id, applying Entity Graph if defined in PageModel.
+	 * 
+	 * @param id id to be searched
+	 * @param fetchOptions FetchOptions (eg: wheter to filter by user visibility, etc)
+	 * @return @Optional with the entity
+	 * @throws AppException
+	 */
 	default Optional<T> findById(K id, FetchOptions fetchOptions) {
-		return StreamSupport.stream(findAll(findByIdPredicate(id, fetchOptions)).spliterator(), false).findFirst();
+
+		// checks whether an EntityGraph is defined in PageModel
+		Optional<EntityGraph> entityGraph = fetchOptions.getPageModel() != null ? getEntityGraph(fetchOptions.getPageModel().getFetchProfile()) : Optional.empty();
+
+		// Builds query and loads records
+		Iterable<T> res  =  Optional.of(addFindByIdPredicate(id))
+			.map(builder -> addFetchOptionsPredicate(builder, fetchOptions))
+			.map(builder -> entityGraph.isPresent() ? findAll(builder, entityGraph.get()) : findAll(builder)).get();
+		return  StreamSupport.stream(res.spliterator(), false).findFirst();		
 	}
 
+	/**
+	 * Finds an entity by id, throwing an @AppExceotion if entity was not found.
+	 * 
+	 * @param id id to be searched
+	 * @param fetchOptions FetchOptions (eg: wheter to filter by user visibility, etc)
+	 * @return @Optional with the entity
+	 * @throws AppException
+	 */
+	default T findByIdException(K id, FetchOptions fetchOptions) throws AppException {
+		return  findById(id, fetchOptions).orElseThrow(() -> new AppException(ErrCode.NOT_FOUND));		
+	}
+
+	/**
+	 * Checks whether an entity exists by it's id.
+	 * 
+	 * @param id id to be searched
+	 * @param fetchOptions FetchOptions (eg: wheter to filter by user visibility, etc)
+	 * @return entity existance
+	 */
 	default boolean existsById(K id, FetchOptions fetchOptions) {
-		return exists(findByIdPredicate(id, fetchOptions));
+		return  Optional.of(addFindByIdPredicate(id))
+			.map(builder -> addFetchOptionsPredicate(builder, fetchOptions))
+			.map(builder -> exists(builder)).get();
 	}
 
-
-	default long count(FetchOptions fetchOptions) {
-		return count(addFetchOptionsPredicate(new BooleanBuilder(), fetchOptions));
+	/**
+	 * Counts entity records.
+	 * 
+	 * @param fetchOptions FetchOptions (eg: wheter to filter by user visibility, etc)
+	 * @return entity existance
+	 */
+	default long count(PageModel pageModel, FetchOptions fetchOptions) {
+		return  Optional.of(new BooleanBuilder())
+			.map(builder -> addFetchOptionsPredicate(builder, fetchOptions))
+			.map(builder -> count(builder)).get();
 	}
 
-	default BooleanBuilder addFetchOptionsPredicate(BooleanBuilder builder, FetchOptions fetchOptions) {
-		addFilterPredicate(builder, fetchOptions.getPageModel());
-		if (fetchOptions.isUserPermFilter()) {
-			addUserPermFilterPredicate(builder);
-		}
-		return builder;
-	}
-
+	/**
+	 * Returns a paged list of entities, filtering by
+	 * - user visibility filters
+	 * - filters defined in pageModel
+	 * 
+	 * ordering by:
+	 * - ordering defined in pageModel (if present) or default ordering
+	 * 
+	 * @param pageModel
+	 * @param fetchOptions
+	 * @return
+	 */
 	default List<T> getList(FetchOptions fetchOptions) {
-		PageModel pageModel = fetchOptions.getPageModel() == null ? new PageModel() : fetchOptions.getPageModel();
-		Predicate fetchOptionsPredicate = addFetchOptionsPredicate(new BooleanBuilder(), fetchOptions);
-		Pageable pageable = getPageable(pageModel);
-		Optional<EntityGraph> entityGraph = getEntityGraph(pageModel.getFetchProfile());
-		Page<T> page = entityGraph.isPresent() ? findAll(fetchOptionsPredicate, pageable, entityGraph.get()) : findAll(fetchOptionsPredicate, pageable);
-		pageModel.setFetchedRows(page.getNumberOfElements());
+		Pageable pageable = getPageable(fetchOptions.getPageModel());
+		Optional<EntityGraph> entityGraph = getEntityGraph(fetchOptions.getPageModel().getFetchProfile());
+
+		Page<T> page  =  Optional.of(addFetchOptionsPredicate(new BooleanBuilder(), fetchOptions))
+			.map(builder -> entityGraph.isPresent() ? findAll(builder, pageable, entityGraph.get()) : findAll(builder, pageable)).get();
+
+		fetchOptions.getPageModel().setFetchedRows(page.getNumberOfElements());
 		return page.getContent();
 	}
 
-
+	/**
+	 * Get paging options based on pageModel
+	 * @param pageModel
+	 * @return
+	 */
 
 	default Pageable getPageable(PageModel pageModel) {
 		List<Order> orderList = new ArrayList<>();
@@ -103,20 +188,44 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 		return PageRequest.of(pageModel.getPageStart() - 1, pageModel.getPageItems(), sort);
 	}
 
+	/**
+	 * This methos should be overridden to define user visibility filters
+	 * @param builder
+	 * @return
+	 */
 	default BooleanBuilder addUserPermFilterPredicate(BooleanBuilder builder) {
 		return builder;
 	}
 
+	/**
+	 * This method should be overriden for getting QBaseEntity
+	 * @return
+	 */
 	QBaseEntity getQBaseEntity();
 
+	/**
+	 * This method should be overridden to return entity EntityGraph based on fetchProfile
+	 * @param fetchProfile
+	 * @return
+	 */
 	default Optional<EntityGraph> getEntityGraph(String fetchProfile) {
 		return Optional.empty();
 	}
 
-	default BooleanBuilder addFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
+	/**
+	 * This method should be overridden to return predicates for filter defined in @pageModel
+	 * @param fetchProfile
+	 * @return
+	 */
+	default BooleanBuilder addPageModelFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
 		return builder;
 	}
 
+	/**
+	 * This method should be overridden to return allowed order by properties
+	 * @param fetchProfile
+	 * @return
+	 */
 	default List<String> getAllowedOrderByList() {
 		String[] s = { "id" };
 		return Arrays.asList(s);

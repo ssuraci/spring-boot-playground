@@ -8,6 +8,6 @@ import lombok.Data;
 @Builder
 public class FetchOptions {
     protected PageModel pageModel;
-    protected boolean userPermFilter;
-    protected boolean exceptionIfNotFound;
+    @Builder.Default
+    protected boolean userPermFilter=true;
 }
