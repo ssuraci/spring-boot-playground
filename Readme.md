@@ -149,7 +149,7 @@ There are 2 maven profiles:
 cd spring-boot-playground/spring-boot-playground-demo/target
 java -jar spring-boot-playground-demo-0.1.1.jar
 ```
-3. Browse springdoc documentation `http://localhost:8080/swagger-ui`
+3. Browse springdoc documentation `http://localhost:8080/swagger-ui.html`
 4. Use `Postman` collection in `src/test/resources/postman/spring boot demo.postman_collection.json` to call REST enpoints
 
 ## Experimental Kubernetes support (minikube)
