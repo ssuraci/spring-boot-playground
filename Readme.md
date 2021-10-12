@@ -143,14 +143,21 @@ There are 2 maven profiles:
     * user: `sa`
     * password: `Pass@word`
 
-1. Start a database configured for chosen maven profile (you can use docker-compose images in `spring-boot-playground-demo/src/main/resources/db/docker/`)        
-2. Run demo application 
+1. Start a database configured for chosen maven profile.
+
+   You can use docker-compose images in `spring-boot-playground-demo/src/main/resources/db/docker/`.
+
+   Change to the desired DB directory (e.g. `db/docker/pgsql`) and start with `docker-compose up -d`
+
+   Stop with `docker-compose down`
+
+3. Run demo application 
 ```
 cd spring-boot-playground/spring-boot-playground-demo/target
 java -jar spring-boot-playground-demo-0.1.1.jar
 ```
 3. Browse springdoc documentation `http://localhost:8080/swagger-ui.html`
-4. Use `Postman` collection in `src/test/resources/postman/spring boot demo.postman_collection.json` to call REST enpoints
+4. Use `Postman` collection in `src/test/resources/postman/spring boot demo.postman_collection.json` to call REST endpoints
 
 ## Experimental Kubernetes support (minikube)
 
