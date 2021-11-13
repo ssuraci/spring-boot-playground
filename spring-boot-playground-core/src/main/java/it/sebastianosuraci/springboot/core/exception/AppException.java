@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AppException extends Exception {
-	public enum ErrCode { OK, BAD_INPUT, NOT_FOUND, VALIDATION, DATA_INTEGRITY, DEVICE_ERROR }
+	public enum ErrCode { OK, BAD_INPUT, NOT_FOUND, VALIDATION, DATA_INTEGRITY, NULL_ID }
 
 	protected final ErrCode errCode; 
 	

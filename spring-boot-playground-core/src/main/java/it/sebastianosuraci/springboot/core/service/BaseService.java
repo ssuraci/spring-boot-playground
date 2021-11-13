@@ -1,31 +1,28 @@
 package it.sebastianosuraci.springboot.core.service;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
 import it.sebastianosuraci.springboot.core.repository.BaseRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.NonNull;
 
 
 
-@RequiredArgsConstructor
-public abstract class BaseService<T extends BaseEntity<K>, K extends Serializable> {
+public abstract class BaseService<T extends BaseEntity<K>, K extends Serializable> extends BaseReadOnlyService <T,K> implements IBaseService<T,K> {
 
-	protected boolean readonly = false;
-
-	final protected BaseRepository<T, K> repository;
-
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+	@PersistenceContext
+	protected EntityManager em;
 		
+	public BaseService(BaseRepository<T, K> repository) {
+		super(repository);
+	}
+
 	protected void beforeInsert(T newEntity) throws AppException {
 
 	}
@@ -49,59 +46,44 @@ public abstract class BaseService<T extends BaseEntity<K>, K extends Serializabl
 
 	}
 
-	protected void checkExistsById(K id, FetchOptions fetchOptions) throws AppException {
-		if (!repository.existsById(id, fetchOptions)) {
-			throw new AppException(ErrCode.NOT_FOUND);
-		}
+	@Transactional
+	public T insert(@NonNull T newEntity) throws AppException {
+		return insert(newEntity, defaultFetchOptions());
 	}
 
 	@Transactional
-	public void insert(T newEntity) throws AppException {
+	public T update(@NonNull T updateEntity) throws AppException {
+		return insert(updateEntity, defaultFetchOptions());
+	}
+
+	@Transactional
+	public void delete(@NonNull K id) throws AppException {
+		delete(id, defaultFetchOptions());
+	}
+
+	@Transactional
+	public T insert(@NonNull T newEntity, @NonNull FetchOptions fetchOptions) throws AppException {
 		beforeInsert(newEntity);
 		repository.save(newEntity);
 		afterInsert(newEntity);
+		em.detach(newEntity); // force reload from DB
+		return findById(newEntity.getId(), fetchOptions).orElseThrow(() -> new AppException(ErrCode.NOT_FOUND));
 	}
 
 	@Transactional
-	public void update(T updateEntity, FetchOptions fetchOptions) throws AppException {		
+	public T update(@NonNull T updateEntity, @NonNull FetchOptions fetchOptions) throws AppException {		
 		checkExistsById(updateEntity.getId(), fetchOptions);
 		updateEntity = beforeUpdate(updateEntity);
 		repository.save(updateEntity);
 		afterUpdate(updateEntity);
+		em.detach(updateEntity); // force reload from DB
+		return findById(updateEntity.getId(), fetchOptions).orElseThrow(() -> new AppException(ErrCode.NOT_FOUND));
 	}
 
 	@Transactional
-	public void delete(T deleteEntity, FetchOptions fetchOptions) throws AppException {
-		checkExistsById(deleteEntity.getId(), fetchOptions);
-		beforeDelete(deleteEntity);
-		repository.delete(deleteEntity);
-		afterDelete(deleteEntity);
-	}
-
-	@Transactional
-	public void delete(K id, FetchOptions fetchOptions) throws AppException {
+	public void delete(@NonNull K id, @NonNull FetchOptions fetchOptions) throws AppException {
 		checkExistsById(id, fetchOptions);
 		repository.deleteById(id);
-	}
-
-	@Transactional
-	public Optional<T> findById(K id, FetchOptions fetchOptions) throws AppException {
-		Optional<T> entity = repository.findById(id, fetchOptions);
-		afterFindById(entity);
-		return entity;
-	}
-
-	@Transactional
-	public boolean existsById(K id, FetchOptions fetchOptions) throws AppException {
-		return repository.existsById(id, fetchOptions);
-	}
-
-	protected void afterFindById(Optional<T> entity) throws AppException {
-		
-	}
-
-	public List<T> getList(FetchOptions fetchOptions) {
-		return repository.getList(fetchOptions);
 	}
 	
 }

@@ -1,9 +1,6 @@
 package it.sebastianosuraci.springboot.demo.mockmvc;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

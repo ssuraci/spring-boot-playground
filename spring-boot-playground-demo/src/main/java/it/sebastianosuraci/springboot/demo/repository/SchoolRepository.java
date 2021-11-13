@@ -6,8 +6,6 @@ import java.util.Optional;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Predicate;
-
 
 import it.sebastianosuraci.springboot.core.domain.QBaseEntity;
 import it.sebastianosuraci.springboot.core.dto.PageModel;

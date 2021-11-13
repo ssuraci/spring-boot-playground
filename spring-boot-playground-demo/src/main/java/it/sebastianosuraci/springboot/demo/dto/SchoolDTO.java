@@ -2,6 +2,9 @@ package it.sebastianosuraci.springboot.demo.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import it.sebastianosuraci.springboot.core.dto.BaseSerialDTO;
 import it.sebastianosuraci.springboot.demo.domain.School.SchoolCategory;
 import lombok.Getter;
@@ -12,9 +15,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SchoolDTO extends BaseSerialDTO  {
+    @NotNull
     protected SchoolCategory category;
 
-	protected String name;
+	@NotBlank
+    protected String name;
 
     protected List<TeacherDTO> teacherList;
 }

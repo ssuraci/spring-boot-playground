@@ -26,6 +26,7 @@ import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
 import it.sebastianosuraci.springboot.core.service.FetchOptions;
+import lombok.NonNull;
 
 
 /**
@@ -40,7 +41,6 @@ import it.sebastianosuraci.springboot.core.service.FetchOptions;
 
 @NoRepositoryBean
 public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable> extends EntityGraphJpaRepository<T, K>, EntityGraphQuerydslPredicateExecutor<T> {
-
 
 	/**
 	 * Returns the predicate based on fetchOptions by adding to the query:
@@ -66,7 +66,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @param fetchOptions FetchOptions (eg: wheter to filter by user visibility, etc)
 	 * @return @BooleamBuilder predicate
 	 */
-	default BooleanBuilder addFindByIdPredicate(K id) {
+	default BooleanBuilder addFindByIdPredicate(@NonNull K id) {
 		BooleanBuilder builder = new BooleanBuilder(); 
 		QBaseEntity baseEntity = getQBaseEntity();
 		builder.and(baseEntity.id.eq(id)); 
@@ -81,8 +81,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @return @Optional with the entity
 	 * @throws AppException
 	 */
-	default Optional<T> findById(K id, FetchOptions fetchOptions) {
-
+	default Optional<T> findById(@NonNull K id, @NonNull FetchOptions fetchOptions) throws AppException {
 		// checks whether an EntityGraph is defined in PageModel
 		Optional<EntityGraph> entityGraph = fetchOptions.getPageModel() != null ? getEntityGraph(fetchOptions.getPageModel().getFetchProfile()) : Optional.empty();
 
@@ -101,7 +100,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @return @Optional with the entity
 	 * @throws AppException
 	 */
-	default T findByIdException(K id, FetchOptions fetchOptions) throws AppException {
+	default T findByIdException(@NonNull K id, @NonNull FetchOptions fetchOptions) throws AppException {
 		return  findById(id, fetchOptions).orElseThrow(() -> new AppException(ErrCode.NOT_FOUND));		
 	}
 
@@ -112,7 +111,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @param fetchOptions FetchOptions (eg: wheter to filter by user visibility, etc)
 	 * @return entity existance
 	 */
-	default boolean existsById(K id, FetchOptions fetchOptions) {
+	default boolean existsById(@NonNull K id, @NonNull FetchOptions fetchOptions) {
 		return  Optional.of(addFindByIdPredicate(id))
 			.map(builder -> addFetchOptionsPredicate(builder, fetchOptions))
 			.map(builder -> exists(builder)).get();
@@ -124,7 +123,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @param fetchOptions FetchOptions (eg: wheter to filter by user visibility, etc)
 	 * @return entity existance
 	 */
-	default long count(PageModel pageModel, FetchOptions fetchOptions) {
+	default long count(@NonNull FetchOptions fetchOptions) {
 		return  Optional.of(new BooleanBuilder())
 			.map(builder -> addFetchOptionsPredicate(builder, fetchOptions))
 			.map(builder -> count(builder)).get();
@@ -142,7 +141,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @param fetchOptions
 	 * @return
 	 */
-	default List<T> getList(FetchOptions fetchOptions) {
+	default List<T> getList(@NonNull FetchOptions fetchOptions) {
 		Pageable pageable = getPageable(fetchOptions.getPageModel());
 		Optional<EntityGraph> entityGraph = getEntityGraph(fetchOptions.getPageModel().getFetchProfile());
 
@@ -208,7 +207,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @param fetchProfile
 	 * @return
 	 */
-	default Optional<EntityGraph> getEntityGraph(String fetchProfile) {
+	default Optional<EntityGraph> getEntityGraph(@NonNull String fetchProfile) {
 		return Optional.empty();
 	}
 

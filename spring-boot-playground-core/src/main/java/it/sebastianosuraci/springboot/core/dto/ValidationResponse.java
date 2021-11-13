@@ -19,7 +19,7 @@ import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
  * @author enrico
  *
  */
-public class ValidationResponse<T> extends WsResp{
+public class ValidationResponse<T> extends WsTypedResp<T>{
 	
 	/**
 	 * A Map of the errors occurred when validating the entity before saving it.
@@ -27,7 +27,7 @@ public class ValidationResponse<T> extends WsResp{
 	protected Map<String, List<String>> validationErrorList=new TreeMap<>();
 
 	public ValidationResponse(){
-		super();
+		super(null);
 	}
 	
 	public ValidationResponse(ErrCode errCode, String message) {
@@ -39,7 +39,7 @@ public class ValidationResponse<T> extends WsResp{
 	 * @param bindingResult A {@link BindingResult} object containing information about the validation process.
 	 */
 	public ValidationResponse(Set<ConstraintViolation<T>> constraintViolationSet) {
-		super();
+		super(null);
 		if (!constraintViolationSet.isEmpty()) {
 			for (ConstraintViolation<T> cv : constraintViolationSet) {
 				addError(cv.getPropertyPath().toString().replaceAll("newEntity.", ""), cv.getMessage());
