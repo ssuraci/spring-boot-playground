@@ -168,3 +168,4 @@ spring-boot-playground-core/src/main/resources/k8s/commands.txt
 spring-boot-playground-demo/src/main/resources/k8s/commands.txt
 .vscode/launch.json
 .vscode/settings.json
+*.tgz

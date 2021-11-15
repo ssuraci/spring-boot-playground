@@ -168,21 +168,32 @@ eval $(minikube docker-env)
 mvn -Pdev-pgsql-k8s clean package docker:build -Dmaven.test.skip=true
 ```
 
-2. Apply Kubernetes resources
+2. You can deploy application to k8s either with `kubectl` or with `helm` (version 3):
+
+3. Apply Kubernetes resources with `kubectl`:
 
 ```
-cd spring-boot-playground-demo/src/main/resources/k8s/
+cd spring-boot-playground-demo/devops/k8s/kubectl
 kubectl apply -f setup/namespace.yaml
 kubectl apply -f postgres/postgres.yaml  --namespace=spring-boot-demo-dev
 kubectl apply -f app/spring-boot-demo.yaml  --namespace=spring-boot-demo-dev
 ```
 
-3. Start minikube tunnel (requires root)
+4. Or, alternatevily, install application with `helm` (if not already installed, install `helm` as described [here](https://helm.sh/docs/intro/install/)
+):
+
+```
+cd spring-boot-playground-demo/devops/k8s/helm/spring-boot-playground
+helm depedency update
+helm install spring-boot-playground-demo . 
+```
+
+5. Start minikube tunnel (requires root)
 ```
 minikube tunnel
 ```
 
-4. Get service list
+6. Get service list
 
 ```
 kubectl get svc
@@ -191,11 +202,18 @@ postgres              LoadBalancer   10.110.228.206   10.110.228.206   54321:309
 spring-boot-demo-lb   LoadBalancer   10.102.131.119   10.102.131.119   8088:30291/TCP    18m
 ```
 
-5. Check web endpoint with IP from previous command output
+7. Check web endpoint with IP from previous command output
 ```
 wget http://10.102.131.119:8088/api/demo/school
 ```
 
+8. To uninstall use:
+
+```
+ helm uninstall spring-boot-playground-demo 
+``` 
+
+9. Eventually remove persistent volume claims
 
 <!-- ROADMAP -->
 ## Roadmap

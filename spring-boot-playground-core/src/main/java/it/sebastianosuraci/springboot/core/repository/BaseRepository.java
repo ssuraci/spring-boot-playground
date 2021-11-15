@@ -207,7 +207,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @param fetchProfile
 	 * @return
 	 */
-	default Optional<EntityGraph> getEntityGraph(@NonNull String fetchProfile) {
+	default Optional<EntityGraph> getEntityGraph(String fetchProfile) {
 		return Optional.empty();
 	}
 

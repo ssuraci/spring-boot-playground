@@ -120,18 +120,6 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-		</testResources>
 		<plugins>
 			<plugin>
 		        	<groupId>org.springframework.boot</groupId>
@@ -180,6 +168,10 @@
                             <name>ssuraci/spring-boot-demo</name>
                             <build>
                                 <from>fabric8/java-alpine-openjdk8-jre</from>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								  </tags>
                                 <assemblies>
                                     <assembly>
                                         <descriptorRef>dependencies</descriptorRef>
@@ -200,14 +192,37 @@
                     </images>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-help-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>show-profiles</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>active-profiles</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
 	</build>
-	<profiles>
+    <profiles>
 		<profile>
 			<id>dev-pgsql</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
 				<datasource.url>jdbc:postgresql://localhost:54320/spring_boot_demo_db</datasource.url>
@@ -224,11 +239,11 @@
 			<id>dev-pgsql-k8s</id>
 			<properties>
 				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
-				<datasource.url>jdbc:postgresql://postgres:54321/postgresdb</datasource.url>
+				<datasource.url>jdbc:postgresql://spring-boot-playground-demo-postgresql:54321/postgresdb</datasource.url>
 				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
 				<datasource.username>postgresadmin</datasource.username>
 				<datasource.password>admin123</datasource.password>
-				<liquibase.url>jdbc:postgresql://postgres:54321/postgresdb</liquibase.url>
+				<liquibase.url>jdbc:postgresql://spring-boot-playground-demo-postgresql:54321/postgresdb</liquibase.url>
 				<liquibase.username>postgresadmin</liquibase.username>
 				<liquibase.password>admin123</liquibase.password>
 				<liquibase.ChangeLogFile>src/main/resources/db/changes/initial-changelog.xml</liquibase.ChangeLogFile>
@@ -249,5 +264,6 @@
 		</profile>
 
 	</profiles>
+
 
 </project>
