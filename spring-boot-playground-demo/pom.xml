@@ -223,6 +223,9 @@
     <profiles>
 		<profile>
 			<id>dev-pgsql</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
 				<datasource.url>jdbc:postgresql://localhost:54320/spring_boot_demo_db</datasource.url>
