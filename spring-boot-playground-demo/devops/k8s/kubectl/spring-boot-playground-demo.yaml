@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-demo
+  name: spring-boot-playground-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: spring-boot-demo-app
+      app: spring-boot-playground-demo
   template:
     metadata:
       labels:
-        app: spring-boot-demo-app
+        app: spring-boot-playground-demo
     spec:
       containers:
-        - name: spring-boot-demo
-          image: ssuraci/spring-boot-demo
+        - name: spring-boot-playground-docker
+          image: ssuraci/spring-boot-playground-demo
           imagePullPolicy: "Never"
           resources:
             requests:
@@ -25,15 +25,18 @@ spec:
               cpu: "1000m"
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: spring-boot-demo-playground-cm  
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-boot-demo-lb
+  name: spring-boot-demo-playground-srv
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-   - port: 8088
+   - port: 8080
      targetPort: 8080
   selector:
-    app: spring-boot-demo-app      
+    app: spring-boot-playground-demo    

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>it.sebastianosuraci.springboot</groupId>
@@ -12,7 +10,10 @@
 	<artifactId>spring-boot-playground-demo</artifactId>
 	<name>spring-boot-playground-demo</name>
 	<description>Demo project for Spring Boot</description>
-    <packaging>jar</packaging>
+	<packaging>jar</packaging>
+	<properties>
+		<docker.image>ssuraci/spring-boot-playground-demo</docker.image>
+	</properties>
 
 	<dependencies>
 
@@ -103,18 +104,18 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
 		</dependency>
-                <dependency>
-                        <groupId>org.springframework.cloud</groupId>
-                        <artifactId>spring-cloud-starter</artifactId>
-                        <version>3.0.3</version>
-                        <scope>test</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.springframework.cloud</groupId>
-                        <artifactId>spring-cloud-starter-bootstrap</artifactId>
-                        <version>3.0.3</version>
-                        <scope>test</scope>
-                </dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter</artifactId>
+			<version>3.0.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+			<version>3.0.3</version>
+			<scope>test</scope>
+		</dependency>
 
 
 	</dependencies>
@@ -122,10 +123,10 @@
 	<build>
 		<plugins>
 			<plugin>
-		        	<groupId>org.springframework.boot</groupId>
-		        	<artifactId>spring-boot-maven-plugin</artifactId>
-    			</plugin>
-			 <plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>
 				<executions>
@@ -159,39 +160,15 @@
 				<artifactId>liquibase-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <configuration>
-                    <verbose>true</verbose>
-                    <images>
-                        <image>
-                            <name>ssuraci/spring-boot-demo</name>
-                            <build>
-                                <from>fabric8/java-alpine-openjdk8-jre</from>
-								<tags>
-									<tag>latest</tag>
-									<tag>${project.version}</tag>
-								  </tags>
-                                <assemblies>
-                                    <assembly>
-                                        <descriptorRef>dependencies</descriptorRef>
-                                        <name>deps</name>
-                                        <targetDir>/app/lib</targetDir>
-                                    </assembly>
-                                    <assembly>
-                                        <descriptorRef>artifact</descriptorRef>
-                                        <targetDir>/app</targetDir>
-                                    </assembly>
-                                </assemblies>
-                                <cmd>java -jar /app/${project.artifactId}-${project.version}.jar</cmd>
-                                <ports>
-                                    <port>8080</port>
-                                </ports>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-            </plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<configuration>
+					<to>
+						<image>${docker.image}</image>
+					</to>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-help-plugin</artifactId>
@@ -220,7 +197,7 @@
 			</testResource>
 		</testResources>
 	</build>
-    <profiles>
+	<profiles>
 		<profile>
 			<id>dev-pgsql</id>
 			<activation>
@@ -232,24 +209,16 @@
 				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
 				<datasource.username>postgres</datasource.username>
 				<datasource.password>postgres</datasource.password>
-				<liquibase.url>jdbc:postgresql://localhost:54320/spring_boot_demo_db</liquibase.url>
-				<liquibase.username>postgres</liquibase.username>
-				<liquibase.password>postgres</liquibase.password>
-				<liquibase.ChangeLogFile>src/main/resources/db/changes/initial-changelog.xml</liquibase.ChangeLogFile>
 			</properties>
 		</profile>
 		<profile>
-			<id>dev-pgsql-k8s</id>
+			<id>docker</id>
 			<properties>
-				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
-				<datasource.url>jdbc:postgresql://spring-boot-playground-demo-postgresql:54321/postgresdb</datasource.url>
-				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
-				<datasource.username>postgresadmin</datasource.username>
-				<datasource.password>admin123</datasource.password>
-				<liquibase.url>jdbc:postgresql://spring-boot-playground-demo-postgresql:54321/postgresdb</liquibase.url>
-				<liquibase.username>postgresadmin</liquibase.username>
-				<liquibase.password>admin123</liquibase.password>
-				<liquibase.ChangeLogFile>src/main/resources/db/changes/initial-changelog.xml</liquibase.ChangeLogFile>
+				<datasource.driverClassName>${DATASOURCE_DRIVER_CLASS_NAME}</datasource.driverClassName>
+				<datasource.url>${DATASOURCE_URL}</datasource.url>
+				<datasource.dialect>${DATASOURCE_DIALECT}</datasource.dialect>
+				<datasource.username>${DATASOURCE_USERNAME}</datasource.username>
+				<datasource.password>${DATASOURCE_PASSWORD}</datasource.password>
 			</properties>
 		</profile>
 		<profile>

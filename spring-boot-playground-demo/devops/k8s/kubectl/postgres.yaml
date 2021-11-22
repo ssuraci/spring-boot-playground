@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: spring-boot-demo-postgresql
+  name: spring-boot-playground-demo-pgsql-ss
 spec:
   replicas: 1
-  serviceName: "spring-boot-demo-postgresql"
+  serviceName: spring-boot-playground-demo-pgsql-db
   selector:
     matchLabels:
-      app: spring-boot-demo-postgresql
+      app: spring-boot-playground-demo-pgsql
   template:
     metadata:
       labels:
-        app: spring-boot-demo-postgresql
+        app: spring-boot-playground-demo-pgsql
     spec:
       containers:
         - name: postgres
-          image: postgres:latest
+          image: postgres:14
           imagePullPolicy: "IfNotPresent"
           resources:
             requests:
@@ -41,19 +41,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
-  labels:
-    app: spring-boot-demo-postgresql
 data:
-  POSTGRES_DB: postgresdb
-  POSTGRES_USER: postgresadmin
-  POSTGRES_PASSWORD: admin123
+  POSTGRES_DB: spring_boot_playground_demo_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: postgres-pv-claim
-  labels:
-    app: spring-boot-demo-postgresql
 spec:
   storageClassName: standard
   accessModes:
@@ -65,11 +61,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-boot-demo-postgresql
+  name: spring-boot-playground-demo-pgsql-db
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-   - port: 54321
+   - port: 5432
      targetPort: 5432
   selector:
-    app: spring-boot-demo-postgresql      
+    app: spring-boot-playground-demo-pgsql     

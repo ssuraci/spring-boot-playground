@@ -3,7 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.sebastianosuraci.springboot</groupId>
     <artifactId>spring-boot-playground</artifactId>
-    <version>0.1.1</version>
+	<parent>
+		<groupId>it.sebastianosuraci.springboot</groupId>
+		<artifactId>spring-boot-playground-bom</artifactId>
+		<version>0.1.1</version>
+		<relativePath>./spring-boot-playground-bom/</relativePath>
+	</parent>
     <name>spring-boot-playground</name>
     <packaging>pom</packaging>
 
@@ -12,16 +17,5 @@
         <module>spring-boot-playground-core</module>
         <module>spring-boot-playground-demo</module>
     </modules>
-    <build>
-        <pluginManagement>
 
-            <plugins>
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.37.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>

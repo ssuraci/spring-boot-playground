@@ -133,97 +133,123 @@ This is a simple starter project for spring based CRUD applications that integra
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-There are 2 maven profiles:
-* `postgres` (default)
-    * jdbc url: `jdbc:postgresql://localhost:54320/spring_boot_demo_db`
+There are 3 maven profiles:
+* `dev-pgsql` (default, pgsql local development)
+    * jdbc url: `jdbc:postgresql://localhost:54320/spring_boot_demo_playground_db`
     * user: `postgres`
     * password: `postgres`
-* `SQL Server`
+* `dev-mssql` (mssql local development)
     * jdbc url: `jdbc:sqlserver://localhost:14330;databaseName=master`
     * user: `sa`
     * password: `Pass@word`
+* `docker` (multi db profile for building docker image)
 
-1. Start a database configured for chosen maven profile.
+For local development, use one either `dev-pgsql` or `dev-mssql` profile. Start the corresponding database with docker compose:
 
-   You can use docker-compose images in `spring-boot-playground-demo/src/main/resources/db/docker/`.
+   ```
+   cd spring-boot-playground-demo/devops/docker-compose`
+   ```
 
-   Change to the desired DB directory (e.g. `db/docker/pgsql`) and start with `docker-compose up -d`
+   Use: 
+   - `docker-compose up spring_boot_playground_pgsql_db` to start postgres
+   - `docker-compose up spring_boot_playground_mssql_db` to start SQL Server
+
+## Run dockerized application with docker-compose
+
+1. Build application docker image
+
+```
+mvn package -Pdocker jib:dockerBuild -Dmaven.test.skip=true
+```
+
+2. Start application and database with docker-compose.
+
+   ```
+   cd spring-boot-playground-demo/devops/docker-compose`
+   ```
+
+   Use: 
+   - `docker-compose --profile=pgsql up` to start app with postgres
+   - `docker-compose --profile=mssql up` to start app with SQL Server
 
    Stop with `docker-compose down`
 
-3. Run demo application 
-```
-cd spring-boot-playground/spring-boot-playground-demo/target
-java -jar spring-boot-playground-demo-0.1.1.jar
-```
 3. Browse springdoc documentation `http://localhost:8080/swagger-ui.html`
 4. Use `Postman` collection in `src/test/resources/postman/spring boot demo.postman_collection.json` to call REST endpoints
 
-## Experimental Kubernetes support (minikube)
+## Deploy to Kubernetes (minikube)
 
-1. Build Docker image with
+1. Minikube prerequisites
+
+Enable `ingress` controller in minikube:
+
+```
+minikube addons enable ingress
+```
+
+It is also useful to enable dashboard to have an overview of cluster status:
+
+```
+minikube enable dashboard
+```
+
+2. Build application docker image
 
 ```
 eval $(minikube docker-env)
-mvn -Pdev-pgsql-k8s clean package docker:build -Dmaven.test.skip=true
+mvn package -Pdocker jib:dockerBuild -Dmaven.test.skip=true
 ```
 
-2. You can deploy application to k8s either with `kubectl` or with `helm` (version 3):
+3. You can deploy application to k8s either with `kubectl` or with `helm` (version 3):
 
-3. Apply Kubernetes resources with `kubectl`:
+4. Apply Kubernetes resources with `kubectl`:
 
 ```
 cd spring-boot-playground-demo/devops/k8s/kubectl
-kubectl apply -f setup/namespace.yaml
-kubectl apply -f postgres/postgres.yaml  --namespace=spring-boot-demo-dev
-kubectl apply -f app/spring-boot-demo.yaml  --namespace=spring-boot-demo-dev
+kubectl apply -f namespace-dev.yaml
+kubectl apply -f ingress.yaml  --namespace=playground-dev
+kubectl apply -f configmap-dev.yaml  --namespace=playground-dev
+kubectl apply -f postgres.yaml  --namespace=playground-dev
+kubectl apply -f spring-boot-playground-demo.yaml  --namespace=playground-dev
 ```
 
-4. Or, alternatevily, install application with `helm` (if not already installed, install `helm` as described [here](https://helm.sh/docs/intro/install/)
+5. Or, alternatevily, install application with `helm` (if not already installed, install `helm` as described [here](https://helm.sh/docs/intro/install/)
 ):
 
+TBD
+
+6. Get minikube ip
 ```
-cd spring-boot-playground-demo/devops/k8s/helm/spring-boot-playground
-helm depedency update
-helm install spring-boot-playground-demo . 
+minikube ip
 ```
 
-5. Start minikube tunnel (requires root)
-```
-minikube tunnel
-```
+7. Edit hosts file
 
-6. Get service list
+Add the following line in hosts file adding minikube ip mapped to `playground.local`. For example if minikube ip is `192.168.49.2`, add:
 
 ```
-kubectl get svc
-NAME                  TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)           AGE
-postgres              LoadBalancer   10.110.228.206   10.110.228.206   54321:30918/TCP   4h56m
-spring-boot-demo-lb   LoadBalancer   10.102.131.119   10.102.131.119   8088:30291/TCP    18m
+192.168.49.2 playground.local
 ```
 
-7. Check web endpoint with IP from previous command output
+
+8. Check web endpoint with IP from previous command output
 ```
-wget http://10.102.131.119:8088/api/demo/school
+wget http://playground.local/api/demo/school
 ```
 
-8. To uninstall use:
+## Known issues
+- Helm support is actually broken
+- Tests in profile `docker` actually do not work
 
-```
- helm uninstall spring-boot-playground-demo 
-``` 
-
-9. Eventually remove persistent volume claims
 
 <!-- ROADMAP -->
 ## Roadmap
 
 * code clenaup
 * further integrations (eg: [fix jpa n+1 problem](Spring-Data-Jpa-ManyToOne-n-plus-1-problem-solution))
-* support more DB
 * security support
-* Kubernetes integration
 * CI/CD pipelines
+* Skaffold support
 * ...
 
 See the [open issues](https://github.com/ssuraci/spring-boot-playground/issues) for a list of proposed features (and known issues).
