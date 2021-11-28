@@ -205,7 +205,7 @@
 			</activation>
 			<properties>
 				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
-				<datasource.url>jdbc:postgresql://localhost:54320/spring_boot_demo_db</datasource.url>
+				<datasource.url>jdbc:postgresql://localhost:54321/spring_boot_playground_demo_db</datasource.url>
 				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
 				<datasource.username>postgres</datasource.username>
 				<datasource.password>postgres</datasource.password>
