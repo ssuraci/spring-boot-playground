@@ -244,7 +244,7 @@ Add the following line in hosts file adding minikube ip mapped to `playground-de
 
 8. Check web endpoint with IP from previous command output
 ```
-wget http://playground.local/api/demo/school
+wget http://playground-demo.local/api/demo/school
 ```
 
 ## Known issues
