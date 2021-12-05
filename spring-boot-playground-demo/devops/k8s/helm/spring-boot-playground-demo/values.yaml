@@ -1,0 +1,19 @@
+postgresql:
+  postgresqlDatabase: "postgresdb"
+  postgresqlUsername: "postgresadmin"
+  postgresqlPassword: "admin123"
+  persistence:
+    size: 1Gi
+
+mymssql:
+  acceptEula: Y
+  sapassword: "admin123"
+  edition:
+    value: "Developer"
+
+db:
+  postgresql:
+    enabled: true
+  mssql:  
+    enabled: false 
+

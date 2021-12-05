@@ -41,11 +41,14 @@ public abstract class BaseController<T extends BaseEntity<K>, D extends BaseDTO<
 
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	final protected IBaseService<T, K> service;
+
 	@Autowired
 	protected Validator validator;
 
 	public BaseController(IBaseService<T, K> service, IBaseMapper<T, D, K> mapper) {
 		super(service, mapper);
+		this.service = service;
 	}
 
 	protected void afterSave(T entity, D dto) {

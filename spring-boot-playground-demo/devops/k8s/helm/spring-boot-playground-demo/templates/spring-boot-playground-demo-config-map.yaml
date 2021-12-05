@@ -1,0 +1,15 @@
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  labels:
+    app.kubernetes.io/instance: "{{ .Release.Name }}-config-map" 
+  name: "{{ .Release.Name }}-config-map"  
+data:
+  # Configuration values can be set as key-value properties
+{{ if .Values.db.postgresql.enabled }}
+  DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
+  DATASOURCE_DIALECT: "org.hibernate.dialect.PostgreSQLDialect"
+  DATASOURCE_URL: "jdbc:postgresql://{{ .Release.Name }}-postgresql/{{ .Values.postgresql.postgresqlDatabase }}"
+  DATASOURCE_USERNAME: "{{ .Values.postgresql.postgresqlUsername }}"
+  DATASOURCE_PASSWORD: "{{ .Values.postgresql.postgresqlPassword }}"
+{{ end }}

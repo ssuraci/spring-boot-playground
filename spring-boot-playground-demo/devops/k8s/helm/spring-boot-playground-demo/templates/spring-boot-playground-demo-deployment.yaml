@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-deployment"
+  labels:
+    app.kubernetes.io/instance: "{{ .Release.Name }}-deployment" 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: "{{ .Release.Name }}-app"
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: "{{ .Release.Name }}-app"
+    spec:
+      containers:
+        - name: "{{ .Release.Name }}-app"
+          image: ssuraci/spring-boot-playground-demo
+          imagePullPolicy: "Never"
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: "{{ .Release.Name }}-config-map"    
+          resources: {}
+      restartPolicy: Always
+status: {}

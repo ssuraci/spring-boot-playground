@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: "{{ .Release.Name }}-service" 
+  name: "{{ .Release.Name }}-service" 
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/instance: "{{ .Release.Name }}-app" 
+status:
+  loadBalancer: {}

@@ -216,7 +216,17 @@ kubectl apply -f spring-boot-playground-demo.yaml  --namespace=playground-dev
 5. Or, alternatevily, install application with `helm` (if not already installed, install `helm` as described [here](https://helm.sh/docs/intro/install/)
 ):
 
-TBD
+```
+cd spring-boot-playground-demo/devops/k8s/helm/spring-boot-playground-demo
+helm dependency update .
+helm install playground-demo  . --namespace playground-dev --create-namespace
+```
+
+To uninstall:
+```
+helm delete playground-demo --namespace playground-dev
+```
+
 
 6. Get minikube ip
 ```
@@ -225,10 +235,10 @@ minikube ip
 
 7. Edit hosts file
 
-Add the following line in hosts file adding minikube ip mapped to `playground.local`. For example if minikube ip is `192.168.49.2`, add:
+Add the following line in hosts file adding minikube ip mapped to `playground-demo.local`. For example if minikube ip is `192.168.49.2`, add:
 
 ```
-192.168.49.2 playground.local
+192.168.49.2 playground-demo.local
 ```
 
 
@@ -238,7 +248,6 @@ wget http://playground.local/api/demo/school
 ```
 
 ## Known issues
-- Helm support is actually broken
 - Tests in profile `docker` actually do not work
 
 

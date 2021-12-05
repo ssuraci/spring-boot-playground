@@ -1,0 +1,14 @@
+name: spring-boot-playground-demo
+description: Spring Boot Playground Helm Chart
+version: 0.0.1
+apiVersion: v1
+appVersion: "0.1.1"
+
+dependencies:
+  - name: postgresql
+    version: ^10
+    repository: "@bitnami"
+    condition: db.postgresql 
+ #  - name: stable/mssql-linux
+ #   version: ^0.7
+ #   condition: db.mssql     

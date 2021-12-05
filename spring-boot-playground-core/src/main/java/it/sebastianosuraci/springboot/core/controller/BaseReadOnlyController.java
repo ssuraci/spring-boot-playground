@@ -21,7 +21,7 @@ import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.mapper.IBaseMapper;
 import it.sebastianosuraci.springboot.core.service.FetchOptions;
-import it.sebastianosuraci.springboot.core.service.IBaseService;
+import it.sebastianosuraci.springboot.core.service.IBaseReadOnlyService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -32,14 +32,14 @@ public abstract class BaseReadOnlyController<T extends BaseEntity<K>, D extends 
 	@Autowired
 	protected Validator validator;
 
-	final protected IBaseService<T, K> service;
+	final protected IBaseReadOnlyService<T, K> readOnlyService;
 
 	final protected IBaseMapper<T, D, K> mapper;
 
 	@GetMapping(path = "/{id}")
 	@ResponseBody
 	public D getOne(@PathVariable K id, HttpServletRequest request) throws AppException {
-		Optional<T> entity = service.findById(id, FetchOptions.builder().userPermFilter(true).build());
+		Optional<T> entity = readOnlyService.findById(id, FetchOptions.builder().userPermFilter(true).build());
 		return entity.map(x -> mapper.entityToDto(x)).orElse(null);
 	}
 
@@ -52,7 +52,7 @@ public abstract class BaseReadOnlyController<T extends BaseEntity<K>, D extends 
 		}
 		beforeGetList(pageModel, request);
 
-		List<T> res = service.getList(FetchOptions.builder().userPermFilter(true).pageModel(pageModel).build());
+		List<T> res = readOnlyService.getList(FetchOptions.builder().userPermFilter(true).pageModel(pageModel).build());
 		response.setHeader("X-Total-Count", Integer.toString(pageModel.getFetchedRows()));
 		return mapper.entityToDtoList(res);
 	}
