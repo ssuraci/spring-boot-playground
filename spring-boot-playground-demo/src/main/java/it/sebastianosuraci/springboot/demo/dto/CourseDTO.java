@@ -22,4 +22,8 @@ public class CourseDTO extends BaseSerialDTO {
 	
 	private String teacherName;
 
+	private Integer schoolId;
+	
+	private String schoolName;
+
 }

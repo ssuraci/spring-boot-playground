@@ -13,5 +13,7 @@ public abstract class CourseMapper extends BaseMapper implements IBaseMapper<Cou
 	@Override
 	@Mapping(target = "teacherId", source="teacher.id")
 	@Mapping(target = "teacherName", source="teacher.name")
+	@Mapping(target = "schoolId", source="teacher.school.id")
+	@Mapping(target = "schoolName", source="teacher.school.name")
 	public abstract CourseDTO entityToDto(Course course);
 }
