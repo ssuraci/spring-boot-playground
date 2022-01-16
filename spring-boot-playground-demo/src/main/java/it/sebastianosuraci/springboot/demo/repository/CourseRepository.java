@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import it.sebastianosuraci.springboot.core.domain.QBaseEntity;
 import it.sebastianosuraci.springboot.core.dto.PageModel;
-import it.sebastianosuraci.springboot.core.exception.AppException;
-import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
 import it.sebastianosuraci.springboot.core.repository.BaseRepository;
 import it.sebastianosuraci.springboot.demo.domain.Course;
 import it.sebastianosuraci.springboot.demo.domain.QCourse;

@@ -1,7 +1,9 @@
 package it.sebastianosuraci.springboot.demo.mapper;
 
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import it.sebastianosuraci.springboot.core.dto.DropdownDTO;
@@ -11,11 +13,11 @@ import it.sebastianosuraci.springboot.core.mapper.IBaseMapper;
 import it.sebastianosuraci.springboot.core.service.FetchOptions;
 import it.sebastianosuraci.springboot.core.service.IBaseService;
 import it.sebastianosuraci.springboot.demo.domain.School;
-import it.sebastianosuraci.springboot.demo.domain.Teacher;
-import it.sebastianosuraci.springboot.demo.dto.TeacherDTO;
+import it.sebastianosuraci.springboot.demo.domain.Student;
+import it.sebastianosuraci.springboot.demo.dto.StudentDTO;
 
 @Mapper(componentModel = "spring", uses = {CourseMapper.class})
-public abstract class TeacherMapper extends BaseMapper implements IBaseMapper<Teacher, TeacherDTO, Integer> {
+public abstract class StudentMapper extends BaseMapper implements IBaseMapper<Student, StudentDTO, Integer> {
    
     @Autowired
     IBaseService<School, Integer> schoolService;
@@ -25,18 +27,18 @@ public abstract class TeacherMapper extends BaseMapper implements IBaseMapper<Te
 
     @Override
     @Mapping(target = "school", source="schoolId")
-	@Mapping(target = "courseList", ignore = true)
-	public abstract Teacher dtoToEntity(TeacherDTO user);
+	public abstract Student dtoToEntity(StudentDTO user);
 
 
     @Override
 	@Mapping(target = "schoolName", source="school.name")
 	@Mapping(target = "schoolId", source="school.id") 
-	public abstract TeacherDTO entityToDto(Teacher teacher);
+	public abstract StudentDTO entityToDto(Student student);
 
 
 	@Override
     @Mapping(target = "value", source="id")
     @Mapping(target = "label", source="name")
-	public abstract DropdownDTO entityToDropdownDto(Teacher entity);
+	public abstract DropdownDTO entityToDropdownDto(Student entity);
+
 }

@@ -1,6 +1,7 @@
 package it.sebastianosuraci.springboot.demo.repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -47,7 +48,12 @@ public interface TeacherRepository extends BaseRepository<Teacher, Integer> {
         findAll(teacher.lastName.like(lastName)).forEach(result::add);
         return result;
     }
-
+	
+    @Override
+    default List<String> getAllowedOrderByList() {
+		String[] s = { "id", "lastName", "birthDate" };
+		return Arrays.asList(s);
+	}
 
     @Override
     default BooleanBuilder addPageModelFilterPredicate(BooleanBuilder builder, PageModel pageModel) {

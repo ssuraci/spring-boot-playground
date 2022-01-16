@@ -1,12 +1,12 @@
 version: "3"
 services:
   
-  spring_boot_playground_demo_pgsql:
+  spring-boot-playground-demo-pgsql:
     image: ssuraci/spring-boot-playground-demo
     environment:
       - DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
       - DATASOURCE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
-      - DATASOURCE_URL=jdbc:postgresql://spring_boot_playground_pgsql_db/${POSTGRES_DB}
+      - DATASOURCE_URL=jdbc:postgresql://spring-boot-playground-pgsql-db/${POSTGRES_DB}
       - DATASOURCE_USERNAME=${POSTGRES_USER}
       - DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}        
     profiles:
@@ -14,9 +14,9 @@ services:
     ports:
       - 8080:8080  
     depends_on:    
-      - spring_boot_playground_pgsql_db
+      - spring-boot-playground-pgsql-db
   
-  spring_boot_playground_pgsql_db:
+  spring-boot-playground-pgsql-db:
     image: postgres:14-alpine
     environment:
      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -27,12 +27,12 @@ services:
     profiles:
       - pgsql
 
-  spring_boot_playground_demo_mssql:
+  spring-boot-playground-demo-mssql:
     image: ssuraci/spring-boot-playground-demo
     environment:
       - DATASOURCE_DRIVER_CLASS_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver
       - DATASOURCE_DIALECT=org.hibernate.dialect.SQLServerDialect
-      - DATASOURCE_URL=jdbc:sqlserver://spring_boot_playground_mssql_db;databaseName=master
+      - DATASOURCE_URL=jdbc:sqlserver://spring-boot-playground-mssql-db;databaseName=master
       - DATASOURCE_USERNAME=sa
       - DATASOURCE_PASSWORD=${MSSQL_PASSWORD}        
     profiles:
@@ -40,9 +40,9 @@ services:
     ports:
       - 8080:8080  
     depends_on:    
-      - spring_boot_playground_mssql_db
+      - spring-boot-playground-mssql-db
       
-  spring_boot_playground_mssql_db:
+  spring-boot-playground-mssql-db:
     image: "mcr.microsoft.com/mssql/server:2019-CU13-ubuntu-20.04"
     environment:
       - SA_PASSWORD=${MSSQL_PASSWORD}

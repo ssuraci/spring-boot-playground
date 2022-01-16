@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
 import it.sebastianosuraci.springboot.core.dto.BaseDTO;
+import it.sebastianosuraci.springboot.core.dto.DropdownDTO;
 import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.mapper.IBaseMapper;
@@ -43,9 +44,7 @@ public abstract class BaseReadOnlyController<T extends BaseEntity<K>, D extends 
 		return entity.map(x -> mapper.entityToDto(x)).orElse(null);
 	}
 
-	@GetMapping
-	@ResponseBody
-	public List<D> getList(PageModel pageModel, HttpServletRequest request, HttpServletResponse response) {
+	protected List<T> getEntityList(PageModel pageModel, HttpServletRequest request, HttpServletResponse response) {
 		// security check
 		if (pageModel == null) {
 			pageModel = new PageModel();
@@ -54,10 +53,21 @@ public abstract class BaseReadOnlyController<T extends BaseEntity<K>, D extends 
 
 		List<T> res = readOnlyService.getList(FetchOptions.builder().userPermFilter(true).pageModel(pageModel).build());
 		response.setHeader("X-Total-Count", Integer.toString(pageModel.getFetchedRows()));
-		return mapper.entityToDtoList(res);
+		return res;
 	}
 
+	@GetMapping
+	@ResponseBody
+	public List<D> getList(PageModel pageModel, HttpServletRequest request, HttpServletResponse response) {
+		
+		return mapper.entityToDtoList(getEntityList(pageModel, request, response));
+	}
 
+	@GetMapping("dropdown")
+	@ResponseBody
+	public List<DropdownDTO> getDropdownList(PageModel pageModel, HttpServletRequest request, HttpServletResponse response) {
+		return mapper.entityToDropdownDtoList(getEntityList(pageModel, request, response));
+	}
 
 	protected void beforeGetList(PageModel pageModel, HttpServletRequest request) {
 

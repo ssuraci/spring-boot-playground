@@ -116,6 +116,18 @@
 			<version>3.0.3</version>
 			<scope>test</scope>
 		</dependency>
+<!-- https://mvnrepository.com/artifact/com.amazonaws.serverless/aws-serverless-java-container-springboot2 -->
+		<dependency>
+			<groupId>com.amazonaws.serverless</groupId>
+			<artifactId>aws-serverless-java-container-springboot2</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-runtime-interface-client -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-runtime-interface-client</artifactId>
+			<version>1.1.0</version>
+		</dependency>
 
 
 	</dependencies>
@@ -183,6 +195,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
 		<resources>
 			<resource>
@@ -209,6 +222,8 @@
 				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
 				<datasource.username>postgres</datasource.username>
 				<datasource.password>postgres</datasource.password>
+				<liquibase.enabled>true</liquibase.enabled>
+				<context.path>/</context.path>
 			</properties>
 		</profile>
 		<profile>
@@ -219,7 +234,42 @@
 				<datasource.dialect>${DATASOURCE_DIALECT}</datasource.dialect>
 				<datasource.username>${DATASOURCE_USERNAME}</datasource.username>
 				<datasource.password>${DATASOURCE_PASSWORD}</datasource.password>
+				<liquibase.enabled>${LIQUIBASE_ENABLED}</liquibase.enabled>
+				<context.path>/</context.path>
 			</properties>
+		</profile>
+		<profile>
+			<id>aws-lambda</id>
+			<properties>
+				<datasource.driverClassName>${DATASOURCE_DRIVER_CLASS_NAME}</datasource.driverClassName>
+				<datasource.url>${DATASOURCE_URL}</datasource.url>
+				<datasource.dialect>${DATASOURCE_DIALECT}</datasource.dialect>
+				<datasource.username>${DATASOURCE_USERNAME}</datasource.username>
+				<datasource.password>${DATASOURCE_PASSWORD}</datasource.password>
+				<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+				<liquibase.enabled>${LIQUIBASE_ENABLED}</liquibase.enabled>
+				<context.path>${CONTEXT_PATH}</context.path>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>3.2.4</version>
+						<configuration>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>shade</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>		
+				</plugins>
+			</build>
 		</profile>
 		<profile>
 			<id>dev-mssql</id>
@@ -232,6 +282,8 @@
 				<datasource.username>sa</datasource.username>
 				<datasource.password>Pass@word</datasource.password>
 				<datasource.dialect>org.hibernate.dialect.SQLServerDialect</datasource.dialect>
+				<liquibase.enabled>true</liquibase.enabled>
+				<context.path>/</context.path>
 			</properties>
 		</profile>
 
