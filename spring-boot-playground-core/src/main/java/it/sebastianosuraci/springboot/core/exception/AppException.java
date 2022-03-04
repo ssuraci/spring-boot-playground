@@ -3,7 +3,7 @@ package it.sebastianosuraci.springboot.core.exception;
 import java.util.List;
 import java.util.Map;
 
-public class AppException extends Exception {
+public class AppException extends RuntimeException {
 	public enum ErrCode { OK, BAD_INPUT, NOT_FOUND, VALIDATION, DATA_INTEGRITY, NULL_ID }
 
 	protected final ErrCode errCode; 

@@ -27,5 +27,7 @@ public class WsTypedResp<T> extends WsResp {
 		super();
 		this.data = data;
 	}
-	
+	public WsTypedResp() {
+		super();
+	}
 }

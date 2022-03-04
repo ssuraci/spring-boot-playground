@@ -12,7 +12,7 @@ import it.sebastianosuraci.springboot.core.factory.ConstraintValidatorFactoryEx;
 
 @Configuration
 public class ValidationConfig {
-    
+
     @Bean
     ConstraintValidatorFactory constraintValidatorFactoryEx() {
         return new ConstraintValidatorFactoryEx();
@@ -21,13 +21,13 @@ public class ValidationConfig {
     @Bean
     public ValidatorFactory validatorFactory() {
         return Validation.byDefaultProvider()
-        .configure().constraintValidatorFactory(constraintValidatorFactoryEx()).buildValidatorFactory();
+                .configure().constraintValidatorFactory(constraintValidatorFactoryEx()).buildValidatorFactory();
 
     }
 
-    @Bean 
+    @Bean
     public Validator validator() {
         return validatorFactory().getValidator();
     }
-    
+
 }

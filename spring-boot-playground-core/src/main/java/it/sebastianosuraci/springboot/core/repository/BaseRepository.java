@@ -148,7 +148,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 		Page<T> page  =  Optional.of(addFetchOptionsPredicate(new BooleanBuilder(), fetchOptions))
 			.map(builder -> entityGraph.isPresent() ? findAll(builder, pageable, entityGraph.get()) : findAll(builder, pageable)).get();
 
-		fetchOptions.getPageModel().setFetchedRows(page.getNumberOfElements());
+		fetchOptions.getPageModel().setFetchedRows(new Long(page.getTotalElements()).intValue());
 		return page.getContent();
 	}
 

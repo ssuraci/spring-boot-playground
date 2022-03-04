@@ -10,7 +10,7 @@ import javax.persistence.Transient;
  * 
  * @author Sebastiano
  * 
- * @param <T>
+ * @param <K>
  *            The type of the primary id.
  */
 @MappedSuperclass

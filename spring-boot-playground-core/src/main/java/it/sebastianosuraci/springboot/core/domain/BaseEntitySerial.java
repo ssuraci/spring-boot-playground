@@ -23,6 +23,4 @@ public abstract class BaseEntitySerial extends BaseEntity<Integer> {
     @Column(name = "id",unique=true, nullable = false)
 	protected Integer id;
 
-
-
 }
