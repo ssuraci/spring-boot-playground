@@ -46,12 +46,11 @@ public abstract class BaseReadOnlyController<T extends BaseEntity<K>, D extends 
 
 	protected List<T> getEntityList(PageModel pageModel, HttpServletRequest request, HttpServletResponse response) {
 		// security check
-		if (pageModel == null) {
-			pageModel = new PageModel();
-		}
-		beforeGetList(pageModel, request);
 
-		List<T> res = readOnlyService.getList(FetchOptions.builder().userPermFilter(true).pageModel(pageModel).build());
+		List<T> res = readOnlyService.getList(
+			FetchOptions.builder().userPermFilter(true)
+			.pageModel(Optional.ofNullable(pageModel).orElse(new PageModel()))
+			.build());
 		response.setHeader("X-Total-Count", Integer.toString(pageModel.getFetchedRows()));
 		return res;
 	}
@@ -67,10 +66,6 @@ public abstract class BaseReadOnlyController<T extends BaseEntity<K>, D extends 
 	@ResponseBody
 	public List<DropdownDTO> getDropdownList(PageModel pageModel, HttpServletRequest request, HttpServletResponse response) {
 		return mapper.entityToDropdownDtoList(getEntityList(pageModel, request, response));
-	}
-
-	protected void beforeGetList(PageModel pageModel, HttpServletRequest request) {
-
 	}
 
 
