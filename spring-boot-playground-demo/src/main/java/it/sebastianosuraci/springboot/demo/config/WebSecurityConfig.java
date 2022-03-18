@@ -1,29 +1,26 @@
 package it.sebastianosuraci.springboot.demo.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
-@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	protected static final String API_CONTEXT="/api/demo/**";
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.csrf().disable()
 			.cors().and()
 			.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/api/demo/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/api/demo/**").permitAll()
-				.antMatchers(HttpMethod.DELETE, "/api/demo/**").permitAll()
-				.antMatchers(HttpMethod.PUT, "/api/demo/**").permitAll()
+				.antMatchers(HttpMethod.GET, API_CONTEXT).permitAll()
+				.antMatchers(HttpMethod.POST, API_CONTEXT).permitAll()
+				.antMatchers(HttpMethod.DELETE, API_CONTEXT).permitAll()
+				.antMatchers(HttpMethod.PUT, API_CONTEXT).permitAll()
 	
 				.and()
 			.formLogin()
@@ -34,16 +31,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll();
 	}
 
-	@Bean
+	
 	@Override
-	public UserDetailsService userDetailsService() {
-		UserDetails user =
-			 User.withDefaultPasswordEncoder()
-				.username("user")
-				.password("password")
-				.roles("USER")
-				.build();
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-		return new InMemoryUserDetailsManager(user);
+	    auth.inMemoryAuthentication()
+	        .withUser("user1")
+	        .password("password1")
+	        .roles("ADMIN")
+	        .and()
+	        .withUser("user2")
+	        .password("password1")
+	        .roles("USER");
 	}
+	
 }

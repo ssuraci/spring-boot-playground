@@ -33,15 +33,15 @@ public abstract class BaseReadOnlyController<T extends BaseEntity<K>, D extends 
 	@Autowired
 	protected Validator validator;
 
-	final protected IBaseReadOnlyService<T, K> readOnlyService;
+	protected final IBaseReadOnlyService<T, K> readOnlyService;
 
-	final protected IBaseMapper<T, D, K> mapper;
+	protected final IBaseMapper<T, D, K> mapper;
 
 	@GetMapping(path = "/{id}")
 	@ResponseBody
 	public D getOne(@PathVariable K id, HttpServletRequest request) throws AppException {
 		Optional<T> entity = readOnlyService.findById(id, FetchOptions.builder().userPermFilter(true).build());
-		return entity.map(x -> mapper.entityToDto(x)).orElse(null);
+		return entity.map(mapper::entityToDto).orElse(null);
 	}
 
 	protected List<T> getEntityList(PageModel pageModel, HttpServletRequest request, HttpServletResponse response) {
@@ -51,7 +51,7 @@ public abstract class BaseReadOnlyController<T extends BaseEntity<K>, D extends 
 			FetchOptions.builder().userPermFilter(true)
 			.pageModel(Optional.ofNullable(pageModel).orElse(new PageModel()))
 			.build());
-		response.setHeader("X-Total-Count", Integer.toString(pageModel.getFetchedRows()));
+		response.setHeader("X-Total-Count", Long.toString(pageModel.getFetchedRows()));
 		return res;
 	}
 

@@ -1,9 +1,7 @@
 package it.sebastianosuraci.springboot.demo.mapper;
 
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import it.sebastianosuraci.springboot.core.dto.DropdownDTO;
@@ -25,7 +23,9 @@ public abstract class StudentMapper extends BaseMapper implements IBaseMapper<St
 		return schoolService.findById(id, FetchOptions.builder().userPermFilter(true).build()).orElse(null);
 	}
 
-    @Override
+    @Mapping(target = "enrolledCourses", ignore = true)
+	@Mapping(target = "skills", ignore = true)
+	@Override
     @Mapping(target = "school", source="schoolId")
 	public abstract Student dtoToEntity(StudentDTO user);
 

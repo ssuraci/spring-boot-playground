@@ -51,7 +51,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	 * @param fetchOptions
 	 * @return
 	 */
-	default BooleanBuilder addFetchOptionsPredicate(BooleanBuilder builder,FetchOptions fetchOptions) {
+	default BooleanBuilder addFetchOptionsPredicate(@NonNull BooleanBuilder builder,FetchOptions fetchOptions) {
 		return Optional.of(builder)
 			.map(b -> fetchOptions.isUserPermFilter() ? addUserPermFilterPredicate(b) : b)
 			.map(b -> fetchOptions.getPageModel() != null ? addPageModelFilterPredicate(b, fetchOptions.getPageModel()) : b)
@@ -114,7 +114,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	default boolean existsById(@NonNull K id, @NonNull FetchOptions fetchOptions) {
 		return  Optional.of(addFindByIdPredicate(id))
 			.map(builder -> addFetchOptionsPredicate(builder, fetchOptions))
-			.map(builder -> exists(builder)).get();
+			.map(this::exists).get();
 	}
 
 	/**
@@ -126,7 +126,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 	default long count(@NonNull FetchOptions fetchOptions) {
 		return  Optional.of(new BooleanBuilder())
 			.map(builder -> addFetchOptionsPredicate(builder, fetchOptions))
-			.map(builder -> count(builder)).get();
+			.map(this::count).get();
 	}
 
 	/**
@@ -148,7 +148,7 @@ public interface BaseRepository<T extends BaseEntity<K>, K extends Serializable>
 		Page<T> page  =  Optional.of(addFetchOptionsPredicate(new BooleanBuilder(), fetchOptions))
 			.map(builder -> entityGraph.isPresent() ? findAll(builder, pageable, entityGraph.get()) : findAll(builder, pageable)).get();
 
-		fetchOptions.getPageModel().setFetchedRows(new Long(page.getTotalElements()).intValue());
+		fetchOptions.getPageModel().setFetchedRows(page.getTotalElements());
 		return page.getContent();
 	}
 

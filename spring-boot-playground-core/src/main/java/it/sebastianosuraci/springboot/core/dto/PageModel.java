@@ -16,7 +16,7 @@ public class PageModel {
 	protected String fetchProfile;
 	protected Integer pageStart = 1;
 	protected Integer pageItems = 20;
-	protected Integer fetchedRows;
+	protected Long fetchedRows;
 	protected List<String> sort = new ArrayList<>();
 
 }
