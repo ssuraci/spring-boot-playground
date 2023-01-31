@@ -2,8 +2,8 @@ package it.sebastianosuraci.springboot.demo.dto;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import it.sebastianosuraci.springboot.core.dto.BaseSerialDTO;
 import lombok.Getter;

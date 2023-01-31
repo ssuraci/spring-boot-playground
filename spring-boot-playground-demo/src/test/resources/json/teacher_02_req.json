@@ -1,0 +1,10 @@
+ {
+        "firstName": "AAA",
+        "lastName": "BBB",
+        "email": "t99@test.com",
+        "birthDate": "1987-01-02",
+        "category": "TC_JUNIOR",
+        "schoolName": "Scuola 1",
+        "schoolId": 1,
+        "courseList": []
+    }

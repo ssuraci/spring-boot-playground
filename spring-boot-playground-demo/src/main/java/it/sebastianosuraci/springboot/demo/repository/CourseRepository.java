@@ -35,10 +35,10 @@ public interface CourseRepository extends BaseRepository<Course, Integer>, Cours
                     builder.and(course.title.likeIgnoreCase(entry.getValue() + '%'));
                     break;
                 case "schoolEq":
-                    builder.and(course.teacher.school.id.eq(Integer.valueOf(entry.getValue())));
+                    builder.and(course.teacher().school().id.eq(Integer.valueOf(entry.getValue())));
                 break;
                 case "teacherEq":
-                    builder.and(course.teacher.id.eq(Integer.valueOf(entry.getValue())));
+                    builder.and(course.teacher().id.eq(Integer.valueOf(entry.getValue())));
                 break;
                 case "startDateAfter":
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

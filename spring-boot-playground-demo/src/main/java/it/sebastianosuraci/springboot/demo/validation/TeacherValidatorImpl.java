@@ -2,7 +2,7 @@ package it.sebastianosuraci.springboot.demo.validation;
 
 import java.util.Optional;
 
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidatorContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

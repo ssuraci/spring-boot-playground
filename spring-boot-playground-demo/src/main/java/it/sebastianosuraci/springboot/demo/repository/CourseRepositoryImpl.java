@@ -2,8 +2,8 @@ package it.sebastianosuraci.springboot.demo.repository;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import com.querydsl.jpa.impl.JPAQuery;
 

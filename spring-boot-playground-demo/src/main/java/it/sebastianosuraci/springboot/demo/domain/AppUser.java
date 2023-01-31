@@ -2,9 +2,8 @@ package it.sebastianosuraci.springboot.demo.domain;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-
 import it.sebastianosuraci.springboot.core.domain.BaseEntitySerial;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

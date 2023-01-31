@@ -2,10 +2,9 @@ package it.sebastianosuraci.springboot.demo.domain;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-
 import it.sebastianosuraci.springboot.core.domain.BaseEntitySerial;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -3,8 +3,8 @@ package it.sebastianosuraci.springboot.demo.repository;
 import java.util.Map;
 import java.util.Optional;
 
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphs;
+import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
+import com.cosium.spring.data.jpa.entity.graph.domain2.NamedEntityGraph;
 import com.querydsl.core.BooleanBuilder;
 
 import it.sebastianosuraci.springboot.core.domain.QBaseEntity;
@@ -48,9 +48,9 @@ public interface SchoolRepository extends BaseRepository<School, Integer> {
         }
 		switch (fetchProfile) {
             case "detail":
-                return Optional.of(EntityGraphs.named("school.teacherList"));
+                return Optional.of(NamedEntityGraph.loading("school.teacherList"));
             case "detailWithCourse":
-                return Optional.of(EntityGraphs.named("school.teacherListAndCourse"));
+                return Optional.of(NamedEntityGraph.loading("school.teacherListAndCourse"));
             default:
                 return Optional.empty();    
         }

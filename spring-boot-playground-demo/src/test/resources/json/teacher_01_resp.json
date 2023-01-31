@@ -1,0 +1,41 @@
+[
+   {
+      "id":1,
+      "firstName":"Mario",
+      "lastName":"Rossi",
+      "email":"t1@test.com",
+      "birthDate":"1987-01-02",
+      "category":"TC_JUNIOR",
+      "schoolName":"Scuola 1",
+      "schoolId":1,
+      "courseList":[
+         
+      ]
+   },
+   {
+      "id":2,
+      "firstName":"Giorgio",
+      "lastName":"Bianchi",
+      "email":"t2@test.com",
+      "birthDate":"1997-11-22",
+      "category":"TC_SENIOR",
+      "schoolName":"Scuola 1",
+      "schoolId":1,
+      "courseList":[
+         
+      ]
+   },
+   {
+      "id":3,
+      "firstName":"Michele",
+      "lastName":"Bianchi",
+      "email":null,
+      "birthDate":null,
+      "category":"TC_JUNIOR",
+      "schoolName":"Scuola 1",
+      "schoolId":1,
+      "courseList":[
+         
+      ]
+   }
+]

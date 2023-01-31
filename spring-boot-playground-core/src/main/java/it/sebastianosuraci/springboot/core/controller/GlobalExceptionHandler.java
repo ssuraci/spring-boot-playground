@@ -40,7 +40,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-    @Override
+    //@Override
     @NonNull
     protected ResponseEntity<Object> handleHttpMessageNotReadable(@NonNull HttpMessageNotReadableException ex,
                                                                   @NonNull HttpHeaders headers,
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new WsResp(ex);
     }
 
-    @Override
+    //@Override
     @NonNull
     protected ResponseEntity<Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException ex,
                                                                   @NonNull HttpHeaders headers,

@@ -1,6 +1,6 @@
 package it.sebastianosuraci.springboot.demo.validation;
 
-import javax.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidator;
 
 import it.sebastianosuraci.springboot.demo.dto.TeacherDTO;
 

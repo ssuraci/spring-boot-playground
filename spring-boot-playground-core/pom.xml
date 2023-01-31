@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>it.sebastianosuraci.springboot</groupId>
 		<artifactId>spring-boot-playground-bom</artifactId>
-		<version>0.1.1</version>
+		<version>0.2.0</version>
 		<relativePath>../spring-boot-playground-bom/</relativePath>
 	</parent>
 	<artifactId>spring-boot-playground-core</artifactId>
@@ -49,6 +49,7 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
+			<classifier>jakarta</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -90,8 +91,8 @@
 			<artifactId>mssql-jdbc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -123,7 +124,7 @@
 			</testResource>
 		</testResources>
 		<plugins>
-
+<!--
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>
@@ -143,6 +144,7 @@
 						<groupId>com.querydsl</groupId>
 						<artifactId>querydsl-apt</artifactId>
 						<version>${querydsl.version}</version>
+						<classifier>jakarta</classifier>
 					</dependency>
 					<dependency>
 						<groupId>com.querydsl</groupId>
@@ -150,9 +152,15 @@
 						<classifier>apt</classifier>
 						<version>${querydsl.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>jakarta.persistence</groupId>
+						<artifactId>jakarta.persistence-api</artifactId>
+						<version>3.1.0</version>
+					</dependency>
+
 				</dependencies>
 			</plugin>
-
+		-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

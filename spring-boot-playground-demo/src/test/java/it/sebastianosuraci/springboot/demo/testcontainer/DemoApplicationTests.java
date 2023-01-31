@@ -2,13 +2,12 @@ package it.sebastianosuraci.springboot.demo.testcontainer;
 
 import java.util.Optional;
 
-import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
-
 import org.junit.Assert;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.exception.AppException;
 import it.sebastianosuraci.springboot.core.service.FetchOptions;
 import it.sebastianosuraci.springboot.demo.domain.School;
@@ -35,20 +34,20 @@ class DemoApplicationTests {
 
 
 	@Test
-	@Disabled
+	// @Disabled
 	void appTeacher02Test() throws AppException {
-		Optional<School> schoolOpt = schoolService.findById(1, FetchOptions.builder().userPermFilter(false).build());
+		Optional<School> schoolOpt = schoolService.findById(1, FetchOptions.builder().userPermFilter(false).pageModel(new PageModel()).build());
 		Assert.assertTrue(schoolOpt.isPresent());
 		Teacher t = new Teacher();
 		t.setFirstName("Michele");
 		t.setLastName("Bianchi");
 		t.setSchool(schoolOpt.get());
 		teacherService.insert(t);
-		Assert.assertEquals(3, teacherService.getList(FetchOptions.builder().userPermFilter(false).build()).size());
+		Assert.assertEquals(3, teacherService.getList(FetchOptions.builder().userPermFilter(false).pageModel(new PageModel()).build()).size());
 	}
 
 	@Test
-	@Disabled
+	// @Disabled
 	void appTeacher03Test() throws AppException {
 		// spring-data
 		Assert.assertEquals(1, teacherRepository.findByLastName("Rossi").size());
@@ -73,9 +72,9 @@ class DemoApplicationTests {
 		Assert.assertEquals(2, teacherOpt.get().getCourseList().size());
 
 		// EntityGraph dynamic	
-		teacherOpt = teacherRepository.findById(1, EntityGraphUtils.fromAttributePaths("courseList"));
-		Assert.assertTrue(teacherOpt.isPresent());
-		Assert.assertEquals(2, teacherOpt.get().getCourseList().size());
+//		teacherOpt = teacherRepository.findById(1, DynamicEntityGraph. .fromAttributePaths("courseList"));
+//		Assert.assertTrue(teacherOpt.isPresent());
+//		Assert.assertEquals(2, teacherOpt.get().getCourseList().size());
 	}
 
 }

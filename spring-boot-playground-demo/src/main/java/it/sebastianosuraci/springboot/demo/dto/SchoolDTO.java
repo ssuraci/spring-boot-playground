@@ -2,8 +2,8 @@ package it.sebastianosuraci.springboot.demo.dto;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import it.sebastianosuraci.springboot.core.dto.BaseSerialDTO;
 import it.sebastianosuraci.springboot.demo.domain.School.SchoolCategory;

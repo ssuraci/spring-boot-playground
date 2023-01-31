@@ -2,9 +2,9 @@ package it.sebastianosuraci.springboot.core.service;
 
 import java.io.Serializable;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntity;
 import it.sebastianosuraci.springboot.core.exception.AppException;

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>it.sebastianosuraci.springboot</groupId>
 		<artifactId>spring-boot-playground-bom</artifactId>
-		<version>0.1.1</version>
+		<version>0.2.0</version>
 		<relativePath>../spring-boot-playground-bom/</relativePath>
 	</parent>
 	<artifactId>spring-boot-playground-demo</artifactId>
@@ -127,8 +127,8 @@
 			<version>2.1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -144,6 +144,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!--
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>
@@ -163,6 +164,7 @@
 						<groupId>com.querydsl</groupId>
 						<artifactId>querydsl-apt</artifactId>
 						<version>${querydsl.version}</version>
+						<classifier>jakarta</classifier>
 					</dependency>
 					<dependency>
 						<groupId>com.querydsl</groupId>
@@ -172,7 +174,11 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
+		-->
+			<plugin>
+				<groupId>org.graalvm.buildtools</groupId>
+				<artifactId>native-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-maven-plugin</artifactId>
@@ -215,6 +221,78 @@
 				<liquibase.enabled>true</liquibase.enabled>
 				<context.path>/</context.path>
 			</properties>
+		</profile>
+		<profile>
+			<id>server</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
+				<datasource.url>jdbc:postgresql://localhost:5432/spring_boot_playground_demo_db</datasource.url>
+				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
+				<datasource.username>playground</datasource.username>
+				<datasource.password>playground</datasource.password>
+				<liquibase.enabled>true</liquibase.enabled>
+				<context.path>/</context.path>
+			</properties>
+		</profile>
+		<profile>
+			<id>native</id>
+			<properties>
+				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
+				<!-- <datasource.url>jdbc:postgresql://localhost:54321/spring_boot_playground_demo_db</datasource.url> -->
+				<datasource.url>jdbc:postgresql://spring-boot-playground-pgsql-db:5432/spring_boot_playground_demo_db</datasource.url>
+				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
+				<datasource.username>postgres</datasource.username>
+				<datasource.password>postgres</datasource.password>
+				<liquibase.enabled>false</liquibase.enabled>
+				<context.path>/</context.path>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<image>
+								<builder>paketobuildpacks/builder:tiny</builder>
+								<env>
+									<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+								</env>
+							</image>
+						</configuration>
+						<executions>
+							<execution>
+								<id>process-aot</id>
+								<goals>
+									<goal>process-aot</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>native-maven-plugin</artifactId>
+						<configuration>
+							<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+							<metadataRepository>
+								<enabled>true</enabled>
+							</metadataRepository>
+							<requiredVersion>22.3</requiredVersion>
+						</configuration>
+						<executions>
+							<execution>
+								<id>add-reachability-metadata</id>
+								<goals>
+									<goal>add-reachability-metadata</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+	
 		</profile>
 		<profile>
 			<id>docker</id>
@@ -281,3 +359,9 @@
 
 
 </project>
+
+<!-- 
+$ export GRAALVM_HOME="/home/seba/Downloads/graalvm-ce-java17-22.3.0"
+$ export PATH="/home/seba/Downloads/graalvm-ce-java17-22.3.0/bin:$PATH"
+$ export JAVA_HOME="/home/seba/Downloads/graalvm-ce-java17-22.3.0"
+-->
