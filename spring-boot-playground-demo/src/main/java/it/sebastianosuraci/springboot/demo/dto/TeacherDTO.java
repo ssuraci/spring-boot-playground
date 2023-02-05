@@ -28,8 +28,9 @@ public class TeacherDTO extends BaseSerialDTO {
 	@Email	
 	protected String email;
 	protected LocalDate birthDate;
-	protected TeacherCategory category;
 	protected String schoolName;
 	protected Integer schoolId;
+	protected String subjectDescription;
+	protected Integer subjectId;
 	protected List<CourseDTO> courseList;
 }

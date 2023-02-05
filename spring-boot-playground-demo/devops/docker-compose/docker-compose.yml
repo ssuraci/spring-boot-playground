@@ -1,6 +1,5 @@
 version: "3"
 services:
-  
   spring-boot-playground-demo-pgsql:
     image: ssuraci/spring-boot-playground-demo
     environment:

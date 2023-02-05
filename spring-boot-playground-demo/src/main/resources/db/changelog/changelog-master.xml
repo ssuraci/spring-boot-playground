@@ -7,4 +7,5 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     <include file="/db/changelog/changes/initial-changelog.xml"/>
     <include file="/db/changelog/changes/001-student-add-column.xml"/>
+    <include file="/db/changelog/changes/002-teacher-add-column.xml"/>
 </databaseChangeLog>

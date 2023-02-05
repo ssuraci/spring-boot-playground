@@ -32,6 +32,8 @@ public abstract class TeacherMapper extends BaseMapper implements IBaseMapper<Te
     @Override
 	@Mapping(target = "schoolName", source="school.name")
 	@Mapping(target = "schoolId", source="school.id") 
+	@Mapping(target = "subjectDescription", source="subject.description")
+	@Mapping(target = "subjectId", source="subject.id") 
 	public abstract TeacherDTO entityToDto(Teacher teacher);
 
 

@@ -29,6 +29,10 @@
             </column>
             <column name="category" type="VARCHAR(20)"/>
             <column name="name" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(255)"/>
+            <column name="lat" type="DOUBLE"/>
+            <column name="lng" type="DOUBLE"/>
         </createTable>
     </changeSet>
     <changeSet author="seba (generated)" id="1613835362679-5">

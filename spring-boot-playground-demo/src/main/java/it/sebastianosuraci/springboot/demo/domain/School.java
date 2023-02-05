@@ -38,6 +38,14 @@ public class School extends BaseEntitySerial {
 	protected SchoolCategory category;
 
 	protected String name;
+	
+	protected String address;
+	
+	protected String city;
+	
+	protected Double lat;
+	
+	protected Double lng;
 
 	@OneToMany(mappedBy = "school")
 	@Fetch(value = FetchMode.SUBSELECT)

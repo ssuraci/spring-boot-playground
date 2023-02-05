@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  keycloak:
+      image: quay.io/keycloak/keycloak:18.0.0
+      environment:
+        KEYCLOAK_ADMIN: admin
+        KEYCLOAK_ADMIN_PASSWORD: password
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "ssl=true"
+      command: start-dev
+      ports:
+        - 8085:8080

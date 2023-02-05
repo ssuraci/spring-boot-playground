@@ -3,6 +3,12 @@ package it.sebastianosuraci.springboot.core.controller;
 import it.sebastianosuraci.springboot.core.dto.ValidationResponse;
 import it.sebastianosuraci.springboot.core.dto.WsResp;
 import it.sebastianosuraci.springboot.core.exception.AppException;
+import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
+
+import java.util.HashMap;
+
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(RuntimeException.class)
@@ -56,7 +62,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public WsResp handleGenericException(AppException ex) {
         return new WsResp(ex);
     }
+    
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    @ExceptionHandler({ConstraintViolationException.class})
+    protected WsResp handleConstraintViolationException(ConstraintViolationException ex) {
+        HashMap<String, String> errors = new HashMap<>();
+        ex.getConstraintViolations().forEach(error -> {
+            String fieldName = error.getPropertyPath().toString();
+            String errorMessage = error.getMessage();
+            errors.put(fieldName, errorMessage);
+        });
 
+        return new WsResp(ErrCode.BAD_INPUT, "Bad Input", errors);
+    }
+    
     @Override
     @NonNull
     protected ResponseEntity<Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException ex,

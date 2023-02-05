@@ -217,6 +217,18 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>server</id>
+			<properties>
+				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
+				<datasource.url>jdbc:postgresql://localhost:5432/spring_boot_playground_demo_db</datasource.url>
+				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
+				<datasource.username>playground</datasource.username>
+				<datasource.password>playground</datasource.password>
+				<liquibase.enabled>true</liquibase.enabled>
+				<context.path>/</context.path>
+			</properties>
+		</profile>
+		<profile>
 			<id>docker</id>
 			<properties>
 				<datasource.driverClassName>${DATASOURCE_DRIVER_CLASS_NAME}</datasource.driverClassName>
