@@ -21,5 +21,13 @@ public class SchoolDTO extends BaseSerialDTO  {
 	@NotBlank
     protected String name;
 
+	protected String address;
+	
+	protected String city;
+	
+	protected Double lat;
+	
+	protected Double lng;	
+	
     protected List<TeacherDTO> teacherList;
 }
