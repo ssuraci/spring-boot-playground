@@ -29,5 +29,4 @@ public class SchoolDTO extends BaseSerialDTO  {
 	
 	protected Double lng;	
 	
-    protected List<TeacherDTO> teacherList;
 }

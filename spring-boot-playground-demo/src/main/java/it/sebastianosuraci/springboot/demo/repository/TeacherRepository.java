@@ -65,8 +65,11 @@ public interface TeacherRepository extends BaseRepository<Teacher, Integer> {
                 case "lastNameLike":
                     builder.and(teacher.lastName.likeIgnoreCase(entry.getValue() + '%'));
                     break;
-                case "schoolEq":
+                case "schoolIdEq":
                     builder.and(teacher.school.id.eq(Integer.parseInt(entry.getValue())));
+                    break;
+                case "subjectIdEq":
+                    builder.and(teacher.subject.id.eq(Integer.parseInt(entry.getValue())));
                 break;
                     default:
                     break;
