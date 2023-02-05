@@ -30,15 +30,16 @@ public class Teacher extends BaseEntitySerial {
 
 	@Column(name="birth_date")
 	protected LocalDate birthDate;
-	
-	@Enumerated(EnumType.STRING)
-	protected TeacherCategory category=TeacherCategory.TC_JUNIOR;
 
 	@OneToMany(mappedBy="teacher")
 	protected Set<Course> courseList; 
 
 	@ManyToOne
 	protected School school;
+
+	@ManyToOne
+	protected Subject subject;
+
 	
 	@Transient
 	public String getName() {

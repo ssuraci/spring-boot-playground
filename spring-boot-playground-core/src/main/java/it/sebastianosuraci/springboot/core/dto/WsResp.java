@@ -17,6 +17,11 @@ public class WsResp {
 		this.message = message;
 	}
 
+	public WsResp(ErrCode errCode, String message, Map<String,String> errorList) {
+		this.errCode = errCode;
+		this.message = message;
+		this.errorList = errorList;
+	}
 	public WsResp(ErrCode errCode) {
 		super();
 		this.errCode = errCode;

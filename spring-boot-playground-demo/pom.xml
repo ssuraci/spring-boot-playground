@@ -224,9 +224,6 @@
 		</profile>
 		<profile>
 			<id>server</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
 				<datasource.url>jdbc:postgresql://localhost:5432/spring_boot_playground_demo_db</datasource.url>
@@ -236,63 +233,6 @@
 				<liquibase.enabled>true</liquibase.enabled>
 				<context.path>/</context.path>
 			</properties>
-		</profile>
-		<profile>
-			<id>native</id>
-			<properties>
-				<datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
-				<!-- <datasource.url>jdbc:postgresql://localhost:54321/spring_boot_playground_demo_db</datasource.url> -->
-				<datasource.url>jdbc:postgresql://spring-boot-playground-pgsql-db:5432/spring_boot_playground_demo_db</datasource.url>
-				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
-				<datasource.username>postgres</datasource.username>
-				<datasource.password>postgres</datasource.password>
-				<liquibase.enabled>false</liquibase.enabled>
-				<context.path>/</context.path>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>
-						<configuration>
-							<image>
-								<builder>paketobuildpacks/builder:tiny</builder>
-								<env>
-									<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-								</env>
-							</image>
-						</configuration>
-						<executions>
-							<execution>
-								<id>process-aot</id>
-								<goals>
-									<goal>process-aot</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.graalvm.buildtools</groupId>
-						<artifactId>native-maven-plugin</artifactId>
-						<configuration>
-							<classesDirectory>${project.build.outputDirectory}</classesDirectory>
-							<metadataRepository>
-								<enabled>true</enabled>
-							</metadataRepository>
-							<requiredVersion>22.3</requiredVersion>
-						</configuration>
-						<executions>
-							<execution>
-								<id>add-reachability-metadata</id>
-								<goals>
-									<goal>add-reachability-metadata</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-	
 		</profile>
 		<profile>
 			<id>docker</id>
