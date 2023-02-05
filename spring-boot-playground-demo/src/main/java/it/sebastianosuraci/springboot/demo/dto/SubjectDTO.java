@@ -1,6 +1,6 @@
 package it.sebastianosuraci.springboot.demo.dto;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import it.sebastianosuraci.springboot.core.dto.BaseSerialDTO;
 import lombok.Getter;

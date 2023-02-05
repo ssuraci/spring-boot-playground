@@ -1,8 +1,8 @@
 package it.sebastianosuraci.springboot.demo.domain;
 
-import javax.persistence.Entity;
 
 import it.sebastianosuraci.springboot.core.domain.BaseEntitySerial;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
