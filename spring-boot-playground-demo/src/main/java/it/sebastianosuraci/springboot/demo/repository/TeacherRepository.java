@@ -77,7 +77,7 @@ public interface TeacherRepository extends BaseRepository<Teacher, Integer> {
     }
 
     default QBaseEntity getQBaseEntity() {
-        return QTeacher.teacher._super._super;    
+        return QTeacher.teacher._super;    
     }
 
 }

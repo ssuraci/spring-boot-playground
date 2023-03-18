@@ -19,7 +19,7 @@ import it.sebastianosuraci.springboot.demo.domain.QCourse;
 public interface CourseRepository extends BaseRepository<Course, Integer>, CourseRepositoryCustom {
     @Override
     default QBaseEntity getQBaseEntity() {
-        return QCourse.course._super._super;    
+        return QCourse.course._super;    
     }
     public Logger logger = LoggerFactory.getLogger("it.sebastianosuraci.springboot.demo.repository.CourseRepository");
 

@@ -38,7 +38,7 @@ public interface SchoolRepository extends BaseRepository<School, Integer> {
     }
 
     default QBaseEntity getQBaseEntity() {
-        return QSchool.school._super._super;    
+        return QSchool.school._super;    
     }
 
     @Override

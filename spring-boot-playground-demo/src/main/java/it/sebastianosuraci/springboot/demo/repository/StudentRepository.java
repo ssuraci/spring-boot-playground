@@ -53,7 +53,7 @@ public interface StudentRepository extends BaseRepository<Student, Integer> {
     }
 
     default QBaseEntity getQBaseEntity() {
-        return QStudent.student._super._super;    
+        return QStudent.student._super;    
     }
 
 }

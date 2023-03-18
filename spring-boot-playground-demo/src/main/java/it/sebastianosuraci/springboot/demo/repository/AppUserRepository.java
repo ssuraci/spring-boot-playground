@@ -8,6 +8,6 @@ import it.sebastianosuraci.springboot.demo.domain.QAppUser;
 public interface AppUserRepository extends BaseRepository<AppUser, Integer> {
     @Override
     default QBaseEntity getQBaseEntity() {
-        return QAppUser.appUser._super._super;    
+        return QAppUser.appUser._super;    
     }
 }

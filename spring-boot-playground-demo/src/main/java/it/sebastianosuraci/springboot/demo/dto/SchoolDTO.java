@@ -11,9 +11,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 public class SchoolDTO extends BaseSerialDTO  {
     @NotNull
     protected SchoolCategory category;
@@ -22,4 +23,5 @@ public class SchoolDTO extends BaseSerialDTO  {
     protected String name;
 
     protected List<TeacherDTO> teacherList;
+
 }

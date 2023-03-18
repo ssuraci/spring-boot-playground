@@ -5,8 +5,13 @@ import java.util.Set;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import it.sebastianosuraci.springboot.core.domain.BaseEntitySerial;
+import it.sebastianosuraci.springboot.core.domain.BaseEntity;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.NamedAttributeNode;
@@ -27,8 +32,12 @@ import lombok.Setter;
 				@NamedSubgraph(name = "subgraph.teacherCourse", 
 						attributeNodes = @NamedAttributeNode(value = "courseList")) 
 				})
-public class School extends BaseEntitySerial {
-
+public class School extends BaseEntity<Integer> {
+    @Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Basic(optional = false)
+    @Column(name = "id",unique=true, nullable = false)
+	protected Integer id;
 	public enum SchoolCategory {
 		SC_NULL, SC_PRIMARY, SC_SECONDARY, SC_HIGH
 	}

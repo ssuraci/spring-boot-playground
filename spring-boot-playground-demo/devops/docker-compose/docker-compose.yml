@@ -1,25 +1,7 @@
 version: "3"
-services:
-<<<<<<< HEAD
-  
+services: 
   spring-boot-playground-demo-pgsql-native:
     image: docker.io/library/spring-boot-playground-demo:0.2.0
-    profiles:
-      - pgsql
-    ports:
-      - 8080:8080  
-    depends_on:    
-      - spring-boot-playground-pgsql-db
-=======
->>>>>>> develop
-  spring-boot-playground-demo-pgsql:
-    image: ssuraci/spring-boot-playground-demo
-    environment:
-      - DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
-      - DATASOURCE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
-      - DATASOURCE_URL=jdbc:postgresql://spring-boot-playground-pgsql-db/${POSTGRES_DB}
-      - DATASOURCE_USERNAME=${POSTGRES_USER}
-      - DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}        
     profiles:
       - pgsql
     ports:
@@ -49,7 +31,7 @@ services:
     profiles:
       - mssql
     ports:
-      - 8080:8080  
+      - 8082:8080  
     depends_on:    
       - spring-boot-playground-mssql-db
       

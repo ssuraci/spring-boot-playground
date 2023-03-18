@@ -10,7 +10,7 @@ import it.sebastianosuraci.springboot.demo.domain.Subject;
 
 public interface SubjectRepository extends BaseRepository<Subject, Integer> {
     default QBaseEntity getQBaseEntity() {
-        return QSubject.subject._super._super;    
+        return QSubject.subject._super;    
     }
     @Override
     default List<String> getAllowedOrderByList() {
