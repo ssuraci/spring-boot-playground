@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base-url}}/teacher?pageStart=1&pageItems=5&sort=-birthDate",
+							"raw": "{{base-url}}/teacher?pageStart=1&pageItems=5&sort=-birthDate&f[schoolIdEq]=1&f[subjectIdEq]=1",
 							"host": [
 								"{{base-url}}"
 							],
@@ -41,9 +41,12 @@
 									"disabled": true
 								},
 								{
-									"key": "f[schoolEq]",
-									"value": "2",
-									"disabled": true
+									"key": "f[schoolIdEq]",
+									"value": "1"
+								},
+								{
+									"key": "f[subjectIdEq]",
+									"value": "1"
 								}
 							]
 						}
