@@ -1,0 +1,1 @@
+alter table teacher add column email varchar(255);

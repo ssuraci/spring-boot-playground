@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: @datasource.url@
+    driverClassName: @datasource.driverClassName@
+    username: @datasource.username@
+    password: @datasource.password@
+    dialect: @datasource.dialect@
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: @datasource.dialect@
+        format-sql: true
+        query:
+          fail_on_pagination_over_collection_fetch: false
+  flyway:
+    enabled: true
+server:
+  tomcat:
+    relaxed-query-chars: "[,]"
+#  spring.jpa.defer-datasource-initialization=false
+#  spring.sql.init.mode=always

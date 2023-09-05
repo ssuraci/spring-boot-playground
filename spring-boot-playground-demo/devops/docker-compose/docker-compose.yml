@@ -1,17 +1,5 @@
 version: "3"
 services:
-<<<<<<< HEAD
-  
-  spring-boot-playground-demo-pgsql-native:
-    image: docker.io/library/spring-boot-playground-demo:0.2.0
-    profiles:
-      - pgsql
-    ports:
-      - 8080:8080  
-    depends_on:    
-      - spring-boot-playground-pgsql-db
-=======
->>>>>>> develop
   spring-boot-playground-demo-pgsql:
     image: ssuraci/spring-boot-playground-demo
     environment:

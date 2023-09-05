@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 
 import it.sebastianosuraci.springboot.demo.dto.TeacherDTO;
+import org.springframework.test.context.jdbc.Sql;
 
 class TestMockMvcTeacher extends MockMvcBaseTest<TeacherDTO> {
 
@@ -19,12 +20,14 @@ class TestMockMvcTeacher extends MockMvcBaseTest<TeacherDTO> {
 
 	
 	@Test
+	@Sql("/test-data/init-data.sql")
 	void readTest01() throws Exception {
 		String expectedJson = new String(Files.readAllBytes( Paths.get("src/test/resources/json/teacher_01_resp.json"))); 
 		readTest("", status().isOk(), expectedJson);
 	}
 
 	@Test
+	@Sql("/test-data/init-data.sql")
 	void writeTest02() throws Exception {
 		String reqJson = new String(Files.readAllBytes( Paths.get("src/test/resources/json/teacher_02_req.json"))); 
 		writeTest(reqJson, HttpMethod.POST, status().isOk(), null);

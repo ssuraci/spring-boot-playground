@@ -40,6 +40,9 @@ public class Teacher extends BaseEntitySerial {
 	@ManyToOne
 	protected Subject subject;
 
+	@Enumerated(EnumType.STRING)
+	protected TeacherCategory category;
+
 	
 	@Transient
 	public String getName() {

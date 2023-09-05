@@ -34,6 +34,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
@@ -50,15 +54,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
@@ -66,6 +64,10 @@
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -86,46 +88,17 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.cosium.spring.data/spring-data-jpa-entity-graph -->
 		<dependency>
 			<groupId>com.cosium.spring.data</groupId>
 			<artifactId>spring-data-jpa-entity-graph</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.playtika.testcontainers/embedded-postgresql -->
-		<dependency>
-			<groupId>com.playtika.testcontainers</groupId>
-			<artifactId>embedded-postgresql</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
-		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter</artifactId>
-			<version>${spring.cloud.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bootstrap</artifactId>
-			<version>${spring.cloud.version}</version>
-			<scope>test</scope>
-		</dependency>
-<!-- https://mvnrepository.com/artifact/com.amazonaws.serverless/aws-serverless-java-container-springboot2 -->
-		<dependency>
-			<groupId>com.amazonaws.serverless</groupId>
-			<artifactId>aws-serverless-java-container-springboot2</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-lambda-java-runtime-interface-client -->
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-lambda-java-runtime-interface-client</artifactId>
-			<version>2.1.0</version>
-		</dependency>
 		<dependency>
 			<groupId>jakarta.annotation</groupId>
 			<artifactId>jakarta.annotation-api</artifactId>
@@ -134,6 +107,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
@@ -144,53 +118,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>apt-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/generated-sources/java</outputDirectory>
-							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>com.querydsl</groupId>
-						<artifactId>querydsl-apt</artifactId>
-						<version>${querydsl.version}</version>
-						<classifier>jakarta</classifier>
-					</dependency>
-					<dependency>
-						<groupId>com.querydsl</groupId>
-						<artifactId>querydsl-jpa</artifactId>
-						<classifier>apt</classifier>
-						<version>${querydsl.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		-->
 			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<groupId>org.liquibase</groupId>
-				<artifactId>liquibase-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-				<configuration>
-					<to>
-						<image>${docker.image}</image>
-					</to>
-				</configuration>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>${flyway.version}</version>
 			</plugin>
 		</plugins>
 		<resources>
@@ -218,7 +153,11 @@
 				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
 				<datasource.username>postgres</datasource.username>
 				<datasource.password>postgres</datasource.password>
-				<liquibase.enabled>true</liquibase.enabled>
+				<test.datasource.driverClassName>org.h2.Driver</test.datasource.driverClassName>
+				<test.datasource.url>jdbc:h2:mem:db;DB_CLOSE_DELAY=-1</test.datasource.url>
+				<test.datasource.dialect>org.hibernate.dialect.H2Dialect</test.datasource.dialect>
+				<test.datasource.username>sa</test.datasource.username>
+				<test.datasource.password>sa</test.datasource.password>
 				<context.path>/</context.path>
 			</properties>
 		</profile>
@@ -230,7 +169,6 @@
 				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
 				<datasource.username>playground</datasource.username>
 				<datasource.password>playground</datasource.password>
-				<liquibase.enabled>true</liquibase.enabled>
 				<context.path>/</context.path>
 			</properties>
 		</profile>
@@ -242,7 +180,6 @@
 				<datasource.dialect>${DATASOURCE_DIALECT}</datasource.dialect>
 				<datasource.username>${DATASOURCE_USERNAME}</datasource.username>
 				<datasource.password>${DATASOURCE_PASSWORD}</datasource.password>
-				<liquibase.enabled>${LIQUIBASE_ENABLED}</liquibase.enabled>
 				<context.path>/</context.path>
 			</properties>
 		</profile>
@@ -255,7 +192,6 @@
 				<datasource.username>${DATASOURCE_USERNAME}</datasource.username>
 				<datasource.password>${DATASOURCE_PASSWORD}</datasource.password>
 				<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
-				<liquibase.enabled>${LIQUIBASE_ENABLED}</liquibase.enabled>
 				<context.path>${CONTEXT_PATH}</context.path>
 			</properties>
 			<build>
@@ -290,7 +226,6 @@
 				<datasource.username>sa</datasource.username>
 				<datasource.password>Pass@word</datasource.password>
 				<datasource.dialect>org.hibernate.dialect.SQLServerDialect</datasource.dialect>
-				<liquibase.enabled>true</liquibase.enabled>
 				<context.path>/</context.path>
 			</properties>
 		</profile>
