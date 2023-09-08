@@ -68,8 +68,11 @@ public interface TeacherRepository extends BaseRepository<Teacher, Integer> {
                 case "schoolEq":
                     builder.and(teacher.school().id.eq(Integer.parseInt(entry.getValue())));
                 break;
-                    default:
-                    break;
+                case "subjectIdEq":
+                    builder.and(teacher.subject().id.eq(Integer.parseInt(entry.getValue())));
+                break;
+                default:
+                break;
                 }
             }
         }

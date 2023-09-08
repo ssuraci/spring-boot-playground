@@ -169,6 +169,11 @@
 				<datasource.dialect>org.hibernate.dialect.PostgreSQLDialect</datasource.dialect>
 				<datasource.username>playground</datasource.username>
 				<datasource.password>playground</datasource.password>
+				<test.datasource.driverClassName>org.h2.Driver</test.datasource.driverClassName>
+				<test.datasource.url>jdbc:h2:mem:db;DB_CLOSE_DELAY=-1</test.datasource.url>
+				<test.datasource.dialect>org.hibernate.dialect.H2Dialect</test.datasource.dialect>
+				<test.datasource.username>sa</test.datasource.username>
+				<test.datasource.password>sa</test.datasource.password>
 				<context.path>/</context.path>
 			</properties>
 		</profile>

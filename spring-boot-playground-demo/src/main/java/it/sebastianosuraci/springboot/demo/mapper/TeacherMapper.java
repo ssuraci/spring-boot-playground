@@ -14,17 +14,12 @@ import it.sebastianosuraci.springboot.demo.domain.School;
 import it.sebastianosuraci.springboot.demo.domain.Teacher;
 import it.sebastianosuraci.springboot.demo.dto.TeacherDTO;
 
-@Mapper(componentModel = "spring", uses = {CourseMapper.class})
+@Mapper(componentModel = "spring", uses = {CourseMapper.class, SchoolMapper.class, SubjectMapper.class})
 public abstract class TeacherMapper extends BaseMapper implements IBaseMapper<Teacher, TeacherDTO, Integer> {
-   
-    @Autowired
-    IBaseService<School, Integer> schoolService;
-    public School integerToSchool(Integer id) throws AppException {
-		return schoolService.findById(id, FetchOptions.builder().userPermFilter(true).build()).orElse(null);
-	}
 
     @Override
     @Mapping(target = "school", source="schoolId")
+	@Mapping(target = "subject", source="subjectId")
 	@Mapping(target = "courseList", ignore = true)
 	public abstract Teacher dtoToEntity(TeacherDTO user);
 
