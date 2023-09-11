@@ -10,16 +10,18 @@ import it.sebastianosuraci.springboot.core.dto.BaseSerialDTO;
 import it.sebastianosuraci.springboot.demo.domain.Teacher.TeacherCategory;
 import it.sebastianosuraci.springboot.demo.validation.TeacherValid;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @TeacherValid
-//@Builder
+@Builder
 public class TeacherDTO extends BaseSerialDTO {	
 	@NotBlank	
 	protected String firstName;

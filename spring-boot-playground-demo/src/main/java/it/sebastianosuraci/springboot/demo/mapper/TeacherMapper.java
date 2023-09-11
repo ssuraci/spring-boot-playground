@@ -1,5 +1,6 @@
 package it.sebastianosuraci.springboot.demo.mapper;
 
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import it.sebastianosuraci.springboot.demo.domain.School;
 import it.sebastianosuraci.springboot.demo.domain.Teacher;
 import it.sebastianosuraci.springboot.demo.dto.TeacherDTO;
 
-@Mapper(componentModel = "spring", uses = {CourseMapper.class, SchoolMapper.class, SubjectMapper.class})
+@Mapper(componentModel = "spring", uses = {CourseMapper.class, SchoolMapper.class, SubjectMapper.class}, builder = @Builder(disableBuilder = true))
 public abstract class TeacherMapper extends BaseMapper implements IBaseMapper<Teacher, TeacherDTO, Integer> {
 
     @Override
