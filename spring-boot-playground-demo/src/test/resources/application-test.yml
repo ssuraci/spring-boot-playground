@@ -5,6 +5,8 @@ spring:
     username: @test.datasource.username@
     password: @test.datasource.password@
     dialect: @test.datasource.dialect@
+  h2:
+    console.enabled: true
   jpa:
     show-sql: true
     hibernate:

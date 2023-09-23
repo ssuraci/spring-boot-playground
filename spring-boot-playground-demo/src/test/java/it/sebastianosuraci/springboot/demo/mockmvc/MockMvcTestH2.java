@@ -1,5 +1,6 @@
 package it.sebastianosuraci.springboot.demo.mockmvc;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,6 +19,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,41 +37,58 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class MockMvcTestH2 {
-
-    public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	ObjectMapper objectMapper;
-
 	@Test
+	@Sql("/test-data/init-data.sql")
 	void readTestMockMvc() throws Exception {
 		ResultActions resultActions = mockMvc.perform(get("/api/demo/school")).
 				andExpect(status().isOk());
 	}
 
+
+	@Autowired
+	ObjectMapper objectMapper;
+
+	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
+
     @Test
+	@Sql("/test-data/init-data.sql")
 	void writeTestMockMvc() throws Exception {
         SchoolDTO schoolDTO = new SchoolDTO();
 
+		// we try to insert a school with empty fields, so validation is triggered
+		// and causes a BadRequest
         mockMvc.perform(post("/api/demo/school")
 			.contentType(APPLICATION_JSON_UTF8)
-			.content(objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(schoolDTO)))
+			// writes JSON body
+			.content(objectMapper.writeValueAsString(schoolDTO)))
 			.andExpect(status().isBadRequest());
 
         schoolDTO.setName("New School");
         schoolDTO.setCategory(SchoolCategory.SC_HIGH);
- 
+
+		// now the fields are OK, and we verify the returned data
         mockMvc.perform(post("/api/demo/school")
 			.contentType(APPLICATION_JSON_UTF8)
-			.content(objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(schoolDTO)))
+			.content(objectMapper.writeValueAsString(schoolDTO)))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			.andExpect(jsonPath("$.data.name", is("New School")));
 
+	}
+	@Test
+	@Sql({"/test-data/init-data.sql", "/test-data/course-data.sql"})
+	void courseReadTest() throws Exception {
+		ResultActions resultActions = mockMvc.perform(get("/api/demo/course"))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(2)))
+				.andExpect(jsonPath("$[0].title").value("Corso Base Angular"));
 	}
 
 }

@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +28,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 @AutoConfigureMockMvc
 class MockMvcTestPgsql {
-
 
 	@Container
 	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>( "postgres:15-alpine");
@@ -62,12 +63,14 @@ class MockMvcTestPgsql {
 //        objectWriter = objectMapper.writer().withDefaultPrettyPrinter();
 
 	@Test
+	@Sql("/test-data/init-data.sql")
 	void readTestMockMvc() throws Exception {
 		ResultActions resultActions = mockMvc.perform(get("/api/demo/school")).
 				andExpect(status().isOk());
 	}
 
     @Test
+	@Sql("/test-data/init-data.sql")
 	void writeTestMockMvc() throws Exception {
         SchoolDTO schoolDTO = new SchoolDTO();
 
@@ -87,5 +90,6 @@ class MockMvcTestPgsql {
 			.andExpect(jsonPath("$.data.name", is("New School")));
 
 	}
+
 
 }
