@@ -13,9 +13,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,29 +29,20 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import it.sebastianosuraci.springboot.demo.domain.School.SchoolCategory;
 import it.sebastianosuraci.springboot.demo.dto.SchoolDTO;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
-@WebAppConfiguration
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class MockMvcApplicationTests {
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@AutoConfigureMockMvc
+class MockMvcTestH2 {
 
-	@Autowired
-    private WebApplicationContext webApplicationContext;
- 
-    private MockMvc mockMvc;
- 
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
-    ObjectMapper objectMapper;
-    ObjectWriter objectWriter;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @BeforeAll
-    public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        objectWriter = objectMapper.writer().withDefaultPrettyPrinter();
-    }
+	@Autowired
+	ObjectMapper objectMapper;
 
 	@Test
 	void readTestMockMvc() throws Exception {
@@ -62,19 +55,19 @@ class MockMvcApplicationTests {
         SchoolDTO schoolDTO = new SchoolDTO();
 
         mockMvc.perform(post("/api/demo/school")
-        .contentType(APPLICATION_JSON_UTF8)
-        .content(objectWriter.writeValueAsString(schoolDTO)))
-		.andExpect(status().isBadRequest());
+			.contentType(APPLICATION_JSON_UTF8)
+			.content(objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(schoolDTO)))
+			.andExpect(status().isBadRequest());
 
         schoolDTO.setName("New School");
         schoolDTO.setCategory(SchoolCategory.SC_HIGH);
  
         mockMvc.perform(post("/api/demo/school")
-        .contentType(APPLICATION_JSON_UTF8)
-        .content(objectWriter.writeValueAsString(schoolDTO)))
-		.andExpect(status().isOk())
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.data.name", is("New School")));
+			.contentType(APPLICATION_JSON_UTF8)
+			.content(objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(schoolDTO)))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$.data.name", is("New School")));
 
 	}
 

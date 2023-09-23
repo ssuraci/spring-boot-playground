@@ -1,10 +1,8 @@
-package it.sebastianosuraci.springboot.demo.test;
+package it.sebastianosuraci.springboot.demo.integration;
 
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import it.sebastianosuraci.springboot.core.dto.PageModel;
 import it.sebastianosuraci.springboot.core.exception.AppException;
@@ -15,13 +13,23 @@ import it.sebastianosuraci.springboot.demo.repository.CourseRepository;
 import it.sebastianosuraci.springboot.demo.repository.TeacherRepository;
 import it.sebastianosuraci.springboot.demo.service.SchoolService;
 import it.sebastianosuraci.springboot.demo.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class DemoApplicationTests {
+@Testcontainers
+class TeacherIntegrationTestPgsql {
 
 	@Autowired
 	TeacherService teacherService;
@@ -35,6 +43,15 @@ class DemoApplicationTests {
 	@Autowired
 	CourseRepository courseRepository;
 
+	@Container
+	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>( "postgres:15-alpine");
+
+	@DynamicPropertySource
+	static void configureProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url", postgres::getJdbcUrl);
+		registry.add("spring.datasource.username", postgres::getUsername);
+		registry.add("spring.datasource.password", postgres::getPassword);
+	}
 
 	@Test
 	@Sql("/test-data/init-data.sql")

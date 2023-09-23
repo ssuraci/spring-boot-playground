@@ -1,4 +1,4 @@
-package it.sebastianosuraci.springboot.demo.mockmvc;
+package it.sebastianosuraci.springboot.demo.mockmvc.base;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -31,31 +31,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-@SpringBootTest
-@WebAppConfiguration
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 abstract class MockMvcBaseTest<D> {
 
-	@Autowired
-	private WebApplicationContext webApplicationContext;
 
+	@Autowired
 	private MockMvc mockMvc;
 
 	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
-	ObjectMapper objectMapper;
-	ObjectWriter objectWriter;
+	@Autowired
+	protected ObjectMapper objectMapper;
 
 	protected abstract String getEndpointUrl();
-
-	@BeforeAll
-	public void setUp() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		objectMapper = new ObjectMapper();
-		objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-		objectWriter = objectMapper.writer().withDefaultPrettyPrinter();
-	}
 
 	List<D> readTest(String urlParams, ResultMatcher status, String expectedJson) throws Exception {
 		ResultActions resultActions = mockMvc.perform(get(getEndpointUrl()+urlParams)).andExpect(status);

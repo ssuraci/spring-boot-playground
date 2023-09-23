@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class TeacherValidatorUnitTest {
+class TeacherValidatorUnitTest {
 	@Mock
 	TeacherRepository teacherRepository;
 
@@ -51,7 +51,7 @@ public class TeacherValidatorUnitTest {
 
 	@DisplayName("JUnit test for svalidate teacher withoud duplicated email")
 	@Test
-	public void validateTeacher() {
+	void validateTeacher() {
 
 		TeacherDTO teacherDto1 = TeacherDTO.builder().firstName( "Mario" ).lastName( "Rossi" ).email( "teacher1@example.com" ).build();
 		TeacherDTO teacherDto2 = TeacherDTO.builder().firstName( "Luigi" ).lastName( "Bianchi" ).email( "teacher2@example.com" ).build();

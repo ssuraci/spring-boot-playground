@@ -1,16 +1,18 @@
-package it.sebastianosuraci.springboot.demo.mockmvc;
+package it.sebastianosuraci.springboot.demo.mockmvc.base;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
+
 import org.springframework.http.HttpMethod;
 
 import it.sebastianosuraci.springboot.demo.dto.TeacherDTO;
 import org.springframework.test.context.jdbc.Sql;
 
-class TestMockMvcTeacher extends MockMvcBaseTest<TeacherDTO> {
+
+abstract class MockMvcBaseTestTeacher extends MockMvcBaseTest<TeacherDTO> {
 
 	
 	@Override
