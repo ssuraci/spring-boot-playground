@@ -22,11 +22,6 @@ public abstract class SubjectMapper extends BaseMapper implements IBaseMapper<Su
     @Mapping(target = "value", source="id")
     @Mapping(target = "label", source="description")
 	public abstract DropdownDTO entityToDropdownDto(Subject entity);
-    
-    public Subject fromId(Integer id) throws AppException {
-		return id != null ? subjectService.findById(id, FetchOptions.builder().userPermFilter(true).build()).orElseThrow(() -> new AppException(ErrCode.NOT_FOUND, "subject")) : null;
-	}
-
 
 	public Subject from(Integer id) throws AppException {
 		return id != null ? subjectService.findById( id, FetchOptions.builder().userPermFilter( true).build()).orElseThrow(() -> new AppException( AppException.ErrCode.NOT_FOUND )) : null;

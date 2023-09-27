@@ -17,7 +17,6 @@ import it.sebastianosuraci.springboot.demo.repository.CourseRepository;
 import it.sebastianosuraci.springboot.demo.repository.TeacherRepository;
 import it.sebastianosuraci.springboot.demo.service.SchoolService;
 import it.sebastianosuraci.springboot.demo.service.TeacherService;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
