@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.NonNull;
@@ -77,12 +78,13 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
 		resp.setErrorList(errors);
 		return resp;
     }
-    //@Override
-    @NonNull
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException ex,
-                                                                  @NonNull HttpHeaders headers,
-                                                                  @NonNull HttpStatus status,
-                                                                  @NonNull WebRequest request) {
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
         ValidationResponse validationResponse = new ValidationResponse();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             validationResponse.addError(((FieldError) error).getField(), error.getDefaultMessage());
