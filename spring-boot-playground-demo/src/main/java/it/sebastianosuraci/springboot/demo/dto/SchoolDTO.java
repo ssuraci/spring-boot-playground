@@ -1,8 +1,5 @@
 package it.sebastianosuraci.springboot.demo.dto;
 
-import java.util.List;
-
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import it.sebastianosuraci.springboot.core.dto.BaseSerialDTO;
@@ -20,15 +17,12 @@ public class SchoolDTO extends BaseSerialDTO  {
 
 	protected String name;
 
-	@NotBlank
 	protected String address;
-
+	
 	protected String city;
-
+	
 	protected Double lat;
-
-	protected Double lng;
-
-
-	protected List<TeacherDTO> teacherList;
+	
+	protected Double lng;	
+	
 }

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.querydsl.core.BooleanBuilder;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -57,6 +58,11 @@ public interface TeacherRepository extends BaseRepository<Teacher, Integer> {
 
     @Override
     default BooleanBuilder addPageModelFilterPredicate(BooleanBuilder builder, PageModel pageModel) {
+    	List<String> sortList = new ArrayList<>();
+    	for (String s : pageModel.getSort()) {
+    		sortList.add(s.replaceAll("fullName", "lastName"));
+    	}
+    	pageModel.setSort(sortList);
         QTeacher teacher = QTeacher.teacher;
         if (pageModel != null && pageModel.getF() != null) {
             for (Map.Entry<String, String> entry : pageModel.getF().entrySet()) {

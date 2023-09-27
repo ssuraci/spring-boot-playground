@@ -4,10 +4,15 @@ import it.sebastianosuraci.springboot.core.service.FetchOptions;
 import it.sebastianosuraci.springboot.core.service.IBaseService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import it.sebastianosuraci.springboot.core.dto.DropdownDTO;
+import it.sebastianosuraci.springboot.core.exception.AppException;
+import it.sebastianosuraci.springboot.core.exception.AppException.ErrCode;
 import it.sebastianosuraci.springboot.core.mapper.BaseMapper;
 import it.sebastianosuraci.springboot.core.mapper.IBaseMapper;
+import it.sebastianosuraci.springboot.core.service.FetchOptions;
+import it.sebastianosuraci.springboot.core.service.IBaseService;
 import it.sebastianosuraci.springboot.demo.domain.School;
 import it.sebastianosuraci.springboot.demo.dto.SchoolDTO;
 import org.springframework.beans.factory.annotation.Autowired;

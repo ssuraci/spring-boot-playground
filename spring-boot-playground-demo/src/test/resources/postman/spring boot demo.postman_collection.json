@@ -2,192 +2,448 @@
 	"info": {
 		"_postman_id": "badfaf79-770c-4cf5-83a3-a5aeb5e2bdf3",
 		"name": "spring boot demo",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19835167"
 	},
 	"item": [
 		{
-			"name": "get school",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/demo/school?pageStart=1&pageItems=20&fetchProfile=detailWithCourse&f[nameLike]=sc",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"demo",
-						"school"
-					],
-					"query": [
-						{
-							"key": "pageStart",
-							"value": "1"
-						},
-						{
-							"key": "pageItems",
-							"value": "20"
-						},
-						{
-							"key": "fetchProfile",
-							"value": "detailWithCourse"
-						},
-						{
-							"key": "f[nameLike]",
-							"value": "sc"
+			"name": "teacher",
+			"item": [
+				{
+					"name": "get teacher list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/teacher?pageStart=1&pageItems=5&sort=-birthDate&f[schoolIdEq]=1&f[subjectIdEq]=1",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"teacher"
+							],
+							"query": [
+								{
+									"key": "pageStart",
+									"value": "1"
+								},
+								{
+									"key": "pageItems",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "-birthDate"
+								},
+								{
+									"key": "f[lastNameLike]",
+									"value": "f",
+									"disabled": true
+								},
+								{
+									"key": "f[schoolIdEq]",
+									"value": "1"
+								},
+								{
+									"key": "f[subjectIdEq]",
+									"value": "1"
+								}
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get teacher",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/demo/teacher/?pageStart=1&pageItems=20",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"demo",
-						"teacher",
-						""
-					],
-					"query": [
-						{
-							"key": "pageStart",
-							"value": "1"
-						},
-						{
-							"key": "pageItems",
-							"value": "20"
-						},
-						{
-							"key": "f[lastNameLike]",
-							"value": "ros",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get teacher by id",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/demo/teacher/3",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"demo",
-						"teacher",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "save teacher",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": " {\n       \"lastName\": \"Verdim\",\n       \"firstName\": \"Alessio\",\n        \"email\": \"t3@test.com\",\n        \"birthDate\": \"1987-01-02\",\n        \"category\": \"TC_JUNIOR\",\n        \"schoolName\": \"Scuola 1\",\n        \"schoolId\": 1\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8080/api/demo/teacher",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"demo",
-						"teacher"
-					]
+				{
+					"name": "get teacher detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/teacher/1",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"teacher",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save teacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n       \"lastName\": \"Giorgi\",\n       \"firstName\": \"Alessio\",\n        \"email\": \"tx@test.com\",\n        \"birthDate\": \"1987-01-02\",\n        \"category\": \"TC_JUNIOR\",\n        \"schoolId\": 1\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/teacher",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update teacher",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n       \"lastName\": \"Verdim\",\n       \"firstName\": \"Alessio\",\n        \"email\": \"t3@test.com\",\n        \"birthDate\": \"1987-01-02\",\n        \"category\": \"TC_JUNIOR\",\n        \"schoolName\": \"Scuola 1\",\n        \"schoolId\": 1,\n        \"id\": 3\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/teacher/3",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"teacher",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete teacher",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/teacher/3",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"teacher",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "update teacher",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": " {\n       \"lastName\": \"Verdim\",\n       \"firstName\": \"Alessio\",\n        \"email\": \"t3@test.com\",\n        \"birthDate\": \"1987-01-02\",\n        \"category\": \"TC_JUNIOR\",\n        \"schoolName\": \"Scuola 1\",\n        \"schoolId\": 1,\n        \"id\": 3\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "subject",
+			"item": [
+				{
+					"name": "get subject list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/subject",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"subject"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8080/api/demo/teacher/3",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"demo",
-						"teacher",
-						"3"
-					]
+				{
+					"name": "get subject detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/subject/1",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"subject",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get subject dropdown",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/subject/dropdown",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"subject",
+								"dropdown"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save subject",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n       \"code\": \"BIO\",\n       \"description\": \"Biology\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/subject",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"subject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update subject",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n     \"id\": 3,\n       \"code\": \"BIO\",\n       \"description\": \"Biology mod\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/subject/3",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"subject",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete subject",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/subject/3",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"subject",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "delete teacher",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "school",
+			"item": [
+				{
+					"name": "get school list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/school/?pageStart=1&pageItems=20",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"school",
+								""
+							],
+							"query": [
+								{
+									"key": "pageStart",
+									"value": "1"
+								},
+								{
+									"key": "pageItems",
+									"value": "20"
+								},
+								{
+									"key": "fetchProfile",
+									"value": "detail",
+									"disabled": true
+								}
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "localhost:8080/api/demo/teacher/3",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"demo",
-						"teacher",
-						"3"
-					]
+				{
+					"name": "get school dropdown",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/school/dropdown",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"school",
+								"dropdown"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get school detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/school/1",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"school",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "save school",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"category\": \"SC_PRIMARY\",\n        \"name\": \"Scuola New\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/school",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"school"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update school",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"id\": 3,\n        \"category\": \"SC_PRIMARY\",\n        \"name\": \"Scuola New Mod\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/school/2",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"school",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete school",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base-url}}/school/3",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"school",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }
