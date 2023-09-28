@@ -81,7 +81,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A simple project starter for Spring Boot based CRUD applications. Provides:
+A simple project starter for Spring Boot 3 based CRUD applications. Provides:
 * abstract classes with basic endpoints for CRUD operations
 * out-of-the-box filtering, pagination, sorting for select operations
 * validation for insert / update
@@ -97,10 +97,11 @@ A simple project starter for Spring Boot based CRUD applications. Provides:
 * [Hibernate Validator](http://hibernate.org/validator/)
 * [Spring Data JPA Entity Graph](https://github.com/Cosium/spring-data-jpa-entity-graph)
 * [SpringDoc](https://springdoc.org/)
-* [Liquibase](https://www.liquibase.org/)
+* [FlywayDB](https://flywaydb.org/)
 * [MapStruct](https://mapstruct.org/)
 * [TestContainers](https://www.testcontainers.org/)
-* [TestContainers Spring Boot](https://github.com/Playtika/testcontainers-spring-boot)
+* [Mockito](https://site.mockito.org/)
+* [H2](https://www.h2database.com/)
 * [Project Lombok](https://projectlombok.org/)
 
 
@@ -113,7 +114,7 @@ This is a simple starter project for spring based CRUD applications that integra
 
 ### Prerequisites
 
-* Java 1.8 or greater
+* Java 17 or greater
 * Maven 3
 * Docker 20.10
 
@@ -135,7 +136,7 @@ This is a simple starter project for spring based CRUD applications that integra
 
 There are 3 maven profiles:
 * `dev-pgsql` (default, pgsql local development)
-    * jdbc url: `jdbc:postgresql://localhost:54320/spring_boot_demo_playground_db`
+    * jdbc url: `jdbc:postgresql://localhost:54321/spring_boot_demo_playground_db`
     * user: `postgres`
     * password: `postgres`
 * `dev-mssql` (mssql local development)
@@ -159,7 +160,9 @@ For local development, use one either `dev-pgsql` or `dev-mssql` profile. Start 
 1. Build application docker image
 
 ```
-mvn package -Pdocker jib:dockerBuild -Dmaven.test.skip=true
+mvn clean package
+cd spring-boot-playground-demo
+mvn -Pdocker spring-boot:build-image
 ```
 
 2. Start application and database with docker-compose.
@@ -173,10 +176,11 @@ mvn package -Pdocker jib:dockerBuild -Dmaven.test.skip=true
    - `docker-compose --profile=mssql up` to start app with SQL Server
 
    Stop with `docker-compose down`
-
+<!--
 3. Browse springdoc documentation `http://localhost:8080/swagger-ui.html`
-4. Use `Postman` collection in `src/test/resources/postman/spring boot demo.postman_collection.json` to call REST endpoints
-
+-->
+3. Use `Postman` collection in `src/test/resources/postman/spring boot demo.postman_collection.json` to call REST endpoints
+<!--
 ## Deploy to Kubernetes (minikube)
 
 1. Minikube prerequisites
@@ -246,16 +250,12 @@ Add the following line in hosts file adding minikube ip mapped to `playground-de
 ```
 wget http://playground-demo.local/api/demo/school
 ```
-
-## Known issues
-- Tests in profile `docker` actually do not work
-
+-->
 
 <!-- ROADMAP -->
 ## Roadmap
 
 * code clenaup
-* further integrations (eg: [fix jpa n+1 problem](Spring-Data-Jpa-ManyToOne-n-plus-1-problem-solution))
 * security support
 * CI/CD pipelines
 * Skaffold support
